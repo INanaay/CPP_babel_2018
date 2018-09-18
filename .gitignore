@@ -1,0 +1,7 @@
+deps/
+build/
+.idea
+conaninfo.txt
+cmake-build-debug/
+conanbuildinfo.txt
+conan_imports_manifest.txt
