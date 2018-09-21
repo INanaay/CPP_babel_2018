@@ -13,7 +13,6 @@ class AudioManager : public IAudioManager
 {
 public:
 	AudioManager();
-	~AudioManager();
 
 	void startAudioRecording(void) override;
 	void stopAudioRecording(void) override;
@@ -40,18 +39,23 @@ private:
 
 	/* input attriutes */
 
-	PaError m_inputErr;
+	PaError m_err;
 	PaStream *m_inputStream;
 	PaStreamParameters m_inputParameters;
 	audioData m_inputData;
+public:
+	const audioData &getM_inputData() const;
+
+private:
 	int m_numSamples;
 
 	/* output attributes */
 
 	PaStreamParameters m_outputParameters;
-	PaError m_outputErr;
 	PaStream *m_outputStream;
 	audioData m_outputData;
+public:
+	void setM_outputData(const audioData &m_outputData);
 };
 
 #endif //CPP_BABEL_2018_AUDIOMANAGER_HPP

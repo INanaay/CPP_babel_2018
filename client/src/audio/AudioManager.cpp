@@ -2,18 +2,15 @@
 // Created by NANAA on 20/09/18.
 //
 
+#include <iostream>
 #include <exception>
 #include "../../inc/audio/AudioManager.hpp"
 
 AudioManager::AudioManager()
 {
+	std::cout << "starting manager" << std::endl;
 	initInputDevice();
 	initOutputDevice();
-}
-
-AudioManager::~AudioManager()
-{
-	Pa_Terminate();
 }
 
 void AudioManager::initInputDevice()
@@ -27,11 +24,17 @@ void AudioManager::initInputDevice()
 		throw std::exception();
 	for (int index = 0; index < m_numSamples; index++)
 		m_inputData.recordedSamples[index] = 0;
-	m_inputErr = Pa_Initialize();
-	if (m_inputErr != paNoError)
+	std::cout << "intializing" << std::endl;
+
+	m_err = Pa_Initialize();
+	std::cout << "intializing" << std::endl;
+	if (m_err != paNoError)
 		throw std::exception();
+	std::cout << "intializing input parameters" << std::endl;
 	initInputParameters();
-	m_inputErr = Pa_OpenStream(
+	std::cout << "Opening stream" << std::endl;
+
+	m_err = Pa_OpenStream(
 		&m_inputStream,
 		&m_inputParameters,
 		NULL,
@@ -40,7 +43,8 @@ void AudioManager::initInputDevice()
 		paClipOff,      /* we won't output out of range samples so don't bother clipping them */
 		recordCallback,
 		&m_inputData);
-	if (m_inputErr != paNoError)
+
+	if (m_err != paNoError)
 		throw std::exception();
 
 }
@@ -60,8 +64,10 @@ void AudioManager::initInputParameters()
 void AudioManager::initOutputDevice()
 {
 	m_outputData.frameIndex = 0;
+	std::cout << "initalizing output parameters\n";
 	initOutputParameters();
-	m_outputErr = Pa_OpenStream(
+	std::cout << "opening output stream\n";
+	m_err = Pa_OpenStream(
 		&m_outputStream,
 		NULL,
 		&m_outputParameters,
@@ -70,54 +76,60 @@ void AudioManager::initOutputDevice()
 		paClipOff,
 		playCallback,
 		&m_outputData);
-	if (m_outputErr != paNoError )
+	if (m_err != paNoError )
 		throw std::exception();
+	std::cout << "Output initilazing done.\n";
 }
 
 
 void AudioManager::initOutputParameters()
 {
+	m_outputParameters.device = Pa_GetDefaultOutputDevice();
 	m_outputParameters.channelCount = 2;
 	m_outputParameters.sampleFormat = paFloat32;
+	std::cout << "wtf\n";
+
 	m_outputParameters.suggestedLatency = Pa_GetDeviceInfo(m_outputParameters.device )->defaultLowOutputLatency;
+	std::cout << "wtf\n";
 	m_outputParameters
 		.hostApiSpecificStreamInfo = NULL;
+	std::cout << "wtf\n";
 }
 
 
 void AudioManager::startAudioRecording(void)
 {
-	m_inputErr = Pa_StartStream(m_inputStream);
-	if (m_inputErr != paNoError)
+	std::cout << "lol\n";
+	m_err = Pa_StartStream(m_inputStream);
+	if (m_err != paNoError)
+		throw std::exception();
+	printf("\n=== Now recording!! Please speak into the microphone. ===\n"); fflush(stdout);
+	while( ( m_err = Pa_IsStreamActive( m_inputStream ) ) == 1 )
+	{
+		Pa_Sleep(1000);
+		printf("index = %d\n", m_inputData.frameIndex ); fflush(stdout);
+	}
+	if( m_err < 0 )
 		throw std::exception();
 
 }
 
 void AudioManager::stopAudioRecording(void)
 {
-	m_inputErr = Pa_CloseStream(m_inputStream);
-	if (m_inputErr != paNoError)
-		throw std::exception();
-	printf("\n=== Now recording!! Please speak into the microphone. ===\n"); fflush(stdout);
-	while( ( m_inputErr = Pa_IsStreamActive( m_inputStream ) ) == 1 )
-	{
-		Pa_Sleep(1000);
-		printf("index = %d\n", m_inputData.frameIndex ); fflush(stdout);
-	}
-	if( m_inputErr < 0 )
-		throw std::exception();
-	m_inputErr = Pa_CloseStream( m_inputStream );
-	if( m_inputErr != paNoError )
+
+
+	m_err = Pa_CloseStream( m_inputStream );
+	if( m_err != paNoError )
 		throw std::exception();
 
 
 	/* Measure maximum peak amplitude. */
 	float max = 0;
 	float average = 0.0;
-	float val
+	float val;
 	for( int i=0; i < m_numSamples; i++ )
 	{
-		val = data.recordedSamples[i];
+		val = m_inputData.recordedSamples[i];
 		if( val < 0 ) val = -val; /* ABS */
 		if( val > max )
 		{
@@ -125,30 +137,29 @@ void AudioManager::stopAudioRecording(void)
 		}
 		average += val;
 	}
-	average = average / (double)numSamples;
+	average = average / (double)m_numSamples;
 	printf("sample max amplitude = %d\n", max );
 	printf("sample average = %lf\n", average );
-	/* Write recorded data to a file. */
 }
 
 void AudioManager::startAudioPlaying(void)
 {
-	m_outputErr = Pa_StartStream(m_outputStream);
-	if (m_outputErr != paNoError)
+	m_err = Pa_StartStream(m_outputStream);
+	if (m_err != paNoError)
 		throw std::exception();
 	printf("Waiting for playback to finish.\n");
 	fflush(stdout);
-	while( ( m_outputErr = Pa_IsStreamActive( m_outputStream ) ) == 1 )
+	while( ( m_err = Pa_IsStreamActive( m_outputStream ) ) == 1 )
 		Pa_Sleep(100);
 }
 
 void AudioManager::stopAudioPlaying(void)
 {
-	m_outputErr = Pa_CloseStream(m_outputStream);
+	m_err = Pa_CloseStream(m_outputStream);
 }
 
 
-static int AudioManager::playCallback(const void *inputBuffer, void *outputBuffer, unsigned long framesPerBuffer,
+int AudioManager::playCallback(const void *inputBuffer, void *outputBuffer, unsigned long framesPerBuffer,
 			       const PaStreamCallbackTimeInfo *timeInfo, PaStreamCallbackFlags statusFlags,
 			       void *userData) {
 	audioData *data = (audioData*)userData;
@@ -190,7 +201,7 @@ static int AudioManager::playCallback(const void *inputBuffer, void *outputBuffe
 	return finished;
 }
 
-static int AudioManager::recordCallback(const void *inputBuffer, void *outputBuffer, unsigned long framesPerBuffer,
+int AudioManager::recordCallback(const void *inputBuffer, void *outputBuffer, unsigned long framesPerBuffer,
 				 const PaStreamCallbackTimeInfo *timeInfo, PaStreamCallbackFlags statusFlags,
 				 void *userData) {
 	audioData *data = (audioData*)userData;
@@ -234,4 +245,12 @@ static int AudioManager::recordCallback(const void *inputBuffer, void *outputBuf
 	}
 	data->frameIndex += framesToCalc;
 	return finished;
+}
+
+const audioData &AudioManager::getM_inputData() const {
+	return m_inputData;
+}
+
+void AudioManager::setM_outputData(const audioData &m_outputData) {
+	AudioManager::m_outputData = m_outputData;
 }
