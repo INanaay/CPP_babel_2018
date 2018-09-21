@@ -8,6 +8,10 @@
 
 AudioManager::AudioManager()
 {
+	m_err = Pa_Initialize();
+	std::cout << "intializing" << std::endl;
+	if (m_err != paNoError)
+		throw std::exception();
 	std::cout << "starting manager" << std::endl;
 	initInputDevice();
 	initOutputDevice();
@@ -24,13 +28,8 @@ void AudioManager::initInputDevice()
 		throw std::exception();
 	for (int index = 0; index < m_numSamples; index++)
 		m_inputData.recordedSamples[index] = 0;
-	std::cout << "intializing" << std::endl;
 
-	m_err = Pa_Initialize();
-	std::cout << "intializing" << std::endl;
-	if (m_err != paNoError)
-		throw std::exception();
-	std::cout << "intializing input parameters" << std::endl;
+
 	initInputParameters();
 	std::cout << "Opening stream" << std::endl;
 
@@ -204,6 +203,8 @@ int AudioManager::playCallback(const void *inputBuffer, void *outputBuffer, unsi
 int AudioManager::recordCallback(const void *inputBuffer, void *outputBuffer, unsigned long framesPerBuffer,
 				 const PaStreamCallbackTimeInfo *timeInfo, PaStreamCallbackFlags statusFlags,
 				 void *userData) {
+
+
 	audioData *data = (audioData*)userData;
 	const float *rptr = (const float*)inputBuffer;
 	float *wptr = &data->recordedSamples[data->frameIndex * NB_CHANNELS];
