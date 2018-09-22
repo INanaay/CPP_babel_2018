@@ -4,8 +4,13 @@ project(CPP_babel_2018)
 set(CMAKE_CXX_STANDARD 14)
 set(CMAKE_CXX_FLAGS "-lpthread")
 
-include(${CMAKE_BINARY_DIR}/conanbuildinfo.cmake)
-conan_basic_setup()
+if(EXISTS ${CMAKE_BINARY_DIR}/conanbuildinfo.cmake)
+    include(${CMAKE_BINARY_DIR}/conanbuildinfo.cmake)
+    conan_basic_setup()
+else()
+    message(WARNING "The file conanbuildinfo.cmake doesn't exist, you have to run conan install first")
+endif()
+
 
 LINK_DIRECTORIES(deps/libs)
 INCLUDE_DIRECTORIES(deps/incs)
