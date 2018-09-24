@@ -1,13 +1,23 @@
 
 #include <iostream>
-#include "inc/audio/AudioManager.hpp"
-#include "inc/audio/EncodeManager.hpp"
+#include "../inc/audio/AudioManager.hpp"
+#include "../inc/audio/EncodeManager.hpp"
+#include <QApplication>
+#include <QPushButton>
 
+using namespace std;
 
-int main(void)
+int main(int argc, char **argv) {
+    QApplication app(argc, argv);
+    QPushButton button("hello world");
+
+    button.show();
+    return app.exec();
+}
+
+/*int main(void)
 {
 	EncodeManager encodeManager;
-
 	AudioManager audioManager;
 
 	audioManager.startAudioRecording();
@@ -25,4 +35,4 @@ int main(void)
 
 	audioManager.setM_outputData(temp);
 	audioManager.startAudioPlaying();
-}
+} */
