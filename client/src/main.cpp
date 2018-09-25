@@ -1,9 +1,19 @@
-
 #include <iostream>
 #include "../inc/audio/AudioManager.hpp"
 #include "../inc/audio/EncodeManager.hpp"
 #include <QApplication>
 #include <QPushButton>
+#include <client/gui/loginscreen.h>
+
+int main(int argc, char *argv[])
+{
+	QApplication a(argc, argv);
+	LoginScreen w;
+	w.show();
+
+	return a.exec();
+}
+
 
 /*
 using namespace std;
@@ -16,6 +26,8 @@ int main(int argc, char **argv) {
     return app.exec();
 } */
 
+
+/*
 int main(void)
 {
 	AudioManager audioManager;
@@ -40,3 +52,4 @@ int main(void)
 			audioManager.pushLastAudio(sample);
 	}
 }
+*/
