@@ -3,13 +3,20 @@
 #include "../inc/audio/EncodeManager.hpp"
 #include <QApplication>
 #include <QPushButton>
-#include <client/gui/loginscreen.h>
+#include "client/gui/loginscreen.h"
+#include "client/gui/mainscreen.hpp"
 
 int main(int argc, char *argv[])
 {
 	QApplication a(argc, argv);
-	LoginScreen w;
-	w.show();
+
+	MainScreen mainScreen;
+
+	mainScreen.show();
+
+
+	//LoginScreen w;
+	//w.show();
 
 	return a.exec();
 }

@@ -7,6 +7,7 @@ LoginScreen::LoginScreen(QWidget *parent) :
     ui(new Ui::LoginScreen)
 {
     ui->setupUi(this);
+    ui->errorLabel->setVisible(false);
 }
 
 LoginScreen::~LoginScreen()
@@ -17,7 +18,10 @@ LoginScreen::~LoginScreen()
 void LoginScreen::on_connectButton_clicked()
 {
     std::cout << "Test" << std::endl;
-    auto username = ui->usernameTextbox->text();
+    auto username = ui->usernameTextbox->text().toStdString();
 
-    std::cout << username.toStdString() << std::endl;
+    if (username.empty())
+        ui->errorLabel->setVisible(true);
+
+    std::cout << username << std::endl;
 }

@@ -24,11 +24,13 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 
 SOURCES += \
-        main.cpp \
-        loginscreen.cpp
+        loginscreen.cpp \
+    mainscreen.cpp
 
 HEADERS += \
-        loginscreen.h
+        loginscreen.h \
+    mainscreen.hpp
 
 FORMS += \
-        loginscreen.ui
+        loginscreen.ui \
+    mainscreen.ui
