@@ -40,7 +40,7 @@ find_package(Qt5Gui CONFIG REQUIRED)
 add_executable(CPP_babel_client
         client/src/main.cpp
         client/src/audio/AudioManager.cpp
-        client/src/audio/EncodeManager.cpp)
+        client/src/audio/EncodeManager.cpp client/src/network/TcpClient.cpp client/inc/network/TcpClient.hpp)
 
 target_link_libraries(CPP_babel_client
         Qt5::Core
