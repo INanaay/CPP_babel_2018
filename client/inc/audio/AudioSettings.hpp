@@ -11,8 +11,10 @@
 #include <stdlib.h>
 #include "portaudio.h"
 
+// TODO use usings in a scope
+
 #define SAMPLE_RATE (48000)
-#define FRAMES_PER_BUFFER (512)
+#define FRAMES_PER_BUFFER (480)
 #define NB_SECONDS (2)
 #define NB_CHANNELS (2)
 
@@ -21,12 +23,19 @@ typedef struct
 	int frameIndex;
 	int maxFrameIndex;
 	float *recordedSamples;
+	std::vector<float> recorded;
 } audioData;
 
-typedef struct encodedData
+typedef struct
 {
-	std::vector<uint8_t> encoded;
+	std::vector<uint8_t> audio;
 	int size;
 } encodedData;
+
+typedef struct
+{
+	std::vector<float> audio {};
+	int size = 0;
+} decodedData;
 
 #endif //CPP_BABEL_2018_AUDIOSETTINGS_HPP

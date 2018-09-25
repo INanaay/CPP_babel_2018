@@ -5,7 +5,9 @@
 #ifndef CPP_BABEL_2018_AUDIOMANAGER_HPP
 #define CPP_BABEL_2018_AUDIOMANAGER_HPP
 
+#include <deque>
 #include <portaudio.h>
+#include <mutex>
 #include "IAudioManager.hpp"
 #include "AudioSettings.hpp"
 
@@ -18,6 +20,11 @@ public:
 	void stopAudioRecording(void) override;
 	void startAudioPlaying(void) override;
 	void stopAudioPlaying(void) override;
+	decodedData getLastRecord();
+	void pushLastAudio(decodedData &);
+
+
+
 
 private:
 	static int playCallback( const void *inputBuffer, void *outputBuffer,
@@ -37,25 +44,20 @@ private:
 	void initInputParameters() override;
 	void initOutputParameters() override;
 
+	PaError m_err;
+	std::deque<decodedData> recordedSamples;
+	std::deque<decodedData> samplesToPlay;
+	std::mutex m_mutex {};
+
 	/* input attriutes */
 
-	PaError m_err;
 	PaStream *m_inputStream;
 	PaStreamParameters m_inputParameters;
-	audioData m_inputData;
-public:
-	const audioData &getM_inputData() const;
-
-private:
-	int m_numSamples;
 
 	/* output attributes */
 
 	PaStreamParameters m_outputParameters;
 	PaStream *m_outputStream;
-	audioData m_outputData;
-public:
-	void setM_outputData(const audioData &m_outputData);
 };
 
 #endif //CPP_BABEL_2018_AUDIOMANAGER_HPP

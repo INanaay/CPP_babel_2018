@@ -5,6 +5,7 @@
 #include <QApplication>
 #include <QPushButton>
 
+/*
 using namespace std;
 
 int main(int argc, char **argv) {
@@ -13,26 +14,29 @@ int main(int argc, char **argv) {
 
     button.show();
     return app.exec();
-}
+} */
 
-/*int main(void)
+int main(void)
 {
-	EncodeManager encodeManager;
 	AudioManager audioManager;
+	EncodeManager encodeManager;
 
 	audioManager.startAudioRecording();
-	audioManager.stopAudioRecording();
-
-	auto temp = audioManager.getM_inputData();
-	temp.frameIndex = 0;
-
-	std::cout << "Encoding data" << std::endl;
-
-	auto encoded = encodeManager.encode(temp.recordedSamples, 0);
-
-	std::cout << "yo\n";
-
-
-	audioManager.setM_outputData(temp);
 	audioManager.startAudioPlaying();
-} */
+
+	while (1)
+	{
+		auto sample = audioManager.getLastRecord();
+
+		if (sample.size > 0) {
+			auto lol = encodeManager.encode(sample);
+
+			auto relol = encodeManager.decode(lol);
+			audioManager.pushLastAudio(relol);
+			std::cout << "ptdr\n";
+
+		}
+		else
+			audioManager.pushLastAudio(sample);
+	}
+}
