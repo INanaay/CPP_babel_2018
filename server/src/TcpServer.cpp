@@ -32,7 +32,8 @@ void TcpServer::accept()
 
         m_clients.insert(std::pair<boost::uuids::uuid, std::shared_ptr<TcpClient>>(uid, client));
 
-        this->accept();
+        if (this->m_isRunning)
+            this->accept();
     };
 
     m_listener.async_accept(*socket, acceptCallback);
