@@ -13,6 +13,7 @@ class Client
 public:
 	Client();
 	void test();
+	void connectToServer();
 private:
 	AudioManager m_audioManager;
 	EncodeManager m_encodeManager;

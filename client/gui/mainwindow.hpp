@@ -2,6 +2,7 @@
 #define MAINWINDOW_HPP
 
 #include <QMainWindow>
+#include <client/inc/client/client.hpp>
 
 namespace Ui {
 class MainWindow;
@@ -17,6 +18,9 @@ public:
 
 private:
     Ui::MainWindow *ui;
+    Client *m_client;
+public:
+	void setM_client(Client *m_client);
 };
 
 #endif // MAINWINDOW_HPP

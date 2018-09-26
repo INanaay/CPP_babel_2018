@@ -37,11 +37,14 @@ find_package(Qt5Gui CONFIG REQUIRED)
 add_executable(CPP_babel_client
         client/src/main.cpp
         client/src/audio/AudioManager.cpp
-        client/src/audio/EncodeManager.cpp)
+        client/src/audio/EncodeManager.cpp
         client/gui/loginscreen.cpp client/gui/loginscreen.hpp
         client/gui/mainwindow.hpp client/gui/mainwindow.cpp
         client/src/client/client.cpp client/inc/client/client.hpp
-        )
+        core/net/Socket.cpp
+        core/net/Socket.hpp
+        core/net/TcpServer.cpp
+        core/net/TcpServer.hpp)
 
 target_link_libraries(CPP_babel_client
         Qt5::Core
