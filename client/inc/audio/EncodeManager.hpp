@@ -14,8 +14,8 @@ public:
 	EncodeManager();
 	~EncodeManager() override;
 
-	unsigned char *encode(const float *toEncode, int size) override;
-	void decode(const unsigned char *toDecode, float *decodedData, int size) override;
+	encodedData encode(const decodedData &data) override;
+	virtual decodedData decode(const encodedData &data) override;
 
 private:
 	OpusEncoder *m_encoder;
