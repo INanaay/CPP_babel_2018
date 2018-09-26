@@ -43,6 +43,7 @@ add_executable(CPP_babel_client
         client/src/audio/EncodeManager.cpp client/src/network/TcpClient.cpp client/inc/network/TcpClient.hpp
         client/gui/loginscreen.cpp client/gui/loginscreen.hpp
         client/gui/mainwindow.hpp client/gui/mainwindow.cpp
+        client/src/client/client.cpp client/inc/client/client.hpp
         )
 
 target_link_libraries(CPP_babel_client

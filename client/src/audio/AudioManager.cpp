@@ -10,6 +10,7 @@
 
 AudioManager::AudioManager()
 {
+	std::cout << "creating AudioManager" << std::endl;
 	m_err = Pa_Initialize();
 	if (m_err != paNoError)
 		throw std::exception();
