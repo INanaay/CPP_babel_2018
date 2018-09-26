@@ -24,13 +24,22 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 
 SOURCES += \
-        loginscreen.cpp \
-    mainscreen.cpp
+    babelgui.cpp \
+    loginscreen.cpp \
+    mainwindow.cpp \
+    mainwindow.cpp
 
 HEADERS += \
         loginscreen.h \
-    mainscreen.hpp
+    mainscreen.hpp \
+    babelgui.h \
+    loginscreen.hpp \
+    mainwindow.hpp \
+    mainwindow.hpp
 
 FORMS += \
-        loginscreen.ui \
-    mainscreen.ui
+    mainscreen.ui \
+    babelgui.ui \
+    loginscreen.ui \
+    mainwindow.ui \
+    mainwindow.ui

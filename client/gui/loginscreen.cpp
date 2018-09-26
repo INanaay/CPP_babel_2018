@@ -1,27 +1,32 @@
-#include "loginscreen.h"
-#include "ui_loginscreen.h"
 #include <iostream>
+#include "loginscreen.hpp"
+#include "ui_loginscreen.h"
 
-LoginScreen::LoginScreen(QWidget *parent) :
-    QMainWindow(parent),
-    ui(new Ui::LoginScreen)
+loginScreen::loginScreen(QWidget *parent) :
+    QWidget(parent),
+    ui(new Ui::loginScreen)
 {
     ui->setupUi(this);
-    ui->errorLabel->setVisible(false);
+    ui->usernameErrorLabel->setVisible(false);
 }
 
-LoginScreen::~LoginScreen()
+loginScreen::~loginScreen()
 {
     delete ui;
 }
 
-void LoginScreen::on_connectButton_clicked()
+void loginScreen::on_connect_button_clicked()
 {
-    std::cout << "Test" << std::endl;
-    auto username = ui->usernameTextbox->text().toStdString();
+   m_username = ui->usernameTextBox->text().toStdString();
 
-    if (username.empty())
-        ui->errorLabel->setVisible(true);
+    if (m_username.empty())
+        ui->usernameErrorLabel->setVisible(true);
+    else
+    {
+        std::cout << m_username << std::endl;
 
-    std::cout << username << std::endl;
+        hide();
+        m_mainWindow = new MainWindow(this);
+        m_mainWindow->show();
+    }
 }
