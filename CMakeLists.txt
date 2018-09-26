@@ -17,13 +17,10 @@ INCLUDE_DIRECTORIES(deps/incs)
 
 add_executable(CPP_babel_server
         server/src/main.cpp
-        server/src/TcpClient.cpp
-        server/inc/TcpClient.hpp
-        server/src/TcpServer.cpp
-        server/inc/TcpServer.hpp
-        server/src/utils/networkBuffer.cpp
-        server/inc/utils/networkBuffer.hpp
-        server/inc/Handlers.hpp)
+        core/net/Socket.cpp
+        core/net/Socket.hpp
+        core/net/TcpServer.cpp
+        core/net/TcpServer.hpp)
 
 TARGET_LINK_LIBRARIES(CPP_babel_server
         boost_system)
@@ -40,7 +37,7 @@ find_package(Qt5Gui CONFIG REQUIRED)
 add_executable(CPP_babel_client
         client/src/main.cpp
         client/src/audio/AudioManager.cpp
-        client/src/audio/EncodeManager.cpp client/src/network/TcpClient.cpp client/inc/network/TcpClient.hpp)
+        client/src/audio/EncodeManager.cpp)
 
 target_link_libraries(CPP_babel_client
         Qt5::Core
