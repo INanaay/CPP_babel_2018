@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>243</width>
+    <width>362</width>
     <height>362</height>
    </rect>
   </property>
@@ -14,14 +14,40 @@
    <string>MainWindow</string>
   </property>
   <widget class="QWidget" name="centralwidget">
-   <widget class="QListView" name="listView">
+   <widget class="QListView" name="contactsListView">
     <property name="geometry">
      <rect>
-      <x>-10</x>
-      <y>30</y>
+      <x>0</x>
+      <y>-10</y>
       <width>256</width>
-      <height>311</height>
+      <height>351</height>
      </rect>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="callButton">
+    <property name="geometry">
+     <rect>
+      <x>260</x>
+      <y>10</y>
+      <width>92</width>
+      <height>36</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Call</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="pushButton_2">
+    <property name="geometry">
+     <rect>
+      <x>260</x>
+      <y>70</y>
+      <width>92</width>
+      <height>36</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>PushButton</string>
     </property>
    </widget>
   </widget>
@@ -30,7 +56,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>243</width>
+     <width>362</width>
      <height>28</height>
     </rect>
    </property>

@@ -30,7 +30,7 @@ void loginScreen::on_connect_button_clicked()
         boost::trim(m_username);
         std::cout << m_username << std::endl;
 
-        m_client->connectToServer();
+        //m_client->connectToServer();
 
         hide();
         m_mainWindow = new MainWindow(this);
