@@ -1,5 +1,7 @@
 #include "mainwindow.hpp"
 #include "ui_mainwindow.h"
+#include <QDesktopWidget>
+#include <QRect>
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -7,9 +9,14 @@ MainWindow::MainWindow(QWidget *parent) :
     m_client(nullptr)
 {
     ui->setupUi(this);
+
+    QRect desktopRect = QApplication::desktop()->availableGeometry(this);
+    QPoint center = desktopRect.center();
+    move(center.x() - width() * 0.5, center.y() - height() * 0.5);
     m_model = new QStringListModel(this);
 
     std::vector<std::string> list;
+    ui->contactsListView->setEditTriggers(0);
     populateContactList(list);
 
 }

@@ -4,6 +4,8 @@
 #include <QApplication>
 #include <QPushButton>
 #include <client/gui/loginscreen.hpp>
+#include <QDesktopWidget>
+
 
 int main(int argc, char *argv[])
 {
@@ -11,9 +13,7 @@ int main(int argc, char *argv[])
 
 	Client client;
 
-
 	loginScreen loginScreen;
-
 	loginScreen.setM_client(&client);
 	loginScreen.show();
 

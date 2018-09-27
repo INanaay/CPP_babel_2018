@@ -2,6 +2,9 @@
 #include "loginscreen.hpp"
 #include "ui_loginscreen.h"
 #include <boost/algorithm/string.hpp>
+#include <QDesktopWidget>
+#include <QRect>
+
 
 
 loginScreen::loginScreen(QWidget *parent) :
@@ -11,6 +14,11 @@ loginScreen::loginScreen(QWidget *parent) :
 {
     ui->setupUi(this);
     ui->usernameErrorLabel->setVisible(false);
+    QRect desktopRect = QApplication::desktop()->availableGeometry(this);
+    QPoint center = desktopRect.center();
+    move(center.x()-width() * 0.5, center.y()-height() * 0.5);
+
+
 }
 
 loginScreen::~loginScreen()
