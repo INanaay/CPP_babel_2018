@@ -10,6 +10,14 @@
 
 class Client
 {
+
+	enum Status
+	{
+		INACTIVE,
+		RECEIVING_CALL,
+		IN_CALL
+	};
+
 public:
 	Client();
 	void test();
@@ -18,6 +26,7 @@ private:
 	AudioManager m_audioManager;
 	EncodeManager m_encodeManager;
 	std::string m_username;
+	Status m_clientStatus;
 public:
 	void setM_username(const std::string &m_username);
 };

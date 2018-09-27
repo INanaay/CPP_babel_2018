@@ -6,9 +6,10 @@
 #include <core/net/Socket.hpp>
 #include <cstring>
 
-Client::Client() : m_audioManager(), m_encodeManager()
+Client::Client() : m_audioManager(), m_encodeManager(), m_clientStatus(INACTIVE)
 {
 	std::cout << "Creating client" << std::endl;
+
 
 }
 
