@@ -22,14 +22,14 @@ public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
     void populateContactList(const std::vector<std::string> &list);
-    void setM_viewModel(ViewModel *m_viewModel);
+    void setM_viewModel(const ViewModel *m_viewModel);
 
 
 private:
     Ui::MainWindow *ui;
     QStringListModel *m_model;
     QStringList m_stringList;
-    ViewModel *m_viewModel;
+    const ViewModel *m_viewModel;
 
 private slots:
     void on_callButton_clicked();

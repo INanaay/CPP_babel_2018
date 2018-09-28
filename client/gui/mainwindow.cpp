@@ -38,24 +38,19 @@ void MainWindow::populateContactList(const std::vector<std::string> &list)
         m_stringList.append(lol);
     }
 
-    std::cout << "mdr" << std::endl;
-
     m_model->setStringList(m_stringList);
 
     ui->contactsListView->setModel(m_model);
-	std::cout << "mdr" << std::endl;
-
 }
 
 void MainWindow::on_callButton_clicked()
 {
-    std::cout << "Yo" << std::endl;
 
-    auto index = ui->contactsListView->currentIndex();
+	auto index = ui->contactsListView->currentIndex();
 
-   std::cout << index.row() << std::endl;
+	std::cout << index.row() << std::endl;
 }
 
-void MainWindow::setM_viewModel(ViewModel *m_viewModel) {
+void MainWindow::setM_viewModel(const ViewModel *m_viewModel) {
 	MainWindow::m_viewModel = m_viewModel;
 }

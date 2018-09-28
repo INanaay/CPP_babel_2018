@@ -5,6 +5,7 @@
 #ifndef CPP_BABEL_2018_VIEWMODEL_HPP
 #define CPP_BABEL_2018_VIEWMODEL_HPP
 
+#include <client/inc/common/contacts.hpp>
 #include <client/gui/mainwindow.hpp>
 #include <client/gui/loginscreen.hpp>
 
@@ -16,8 +17,10 @@ class ViewModel
 {
 public:
 	ViewModel();
-	void start();
-	void startMainApplication();
+	void start() const;
+	void startMainApplication() const;
+	void populateContactList(const std::vector<Contact> &contacts) const;
+	void setClientUsername(const std::string &username);
 private:
 	MainWindow *m_mainWindow;
 	loginScreen *m_loginScreen;

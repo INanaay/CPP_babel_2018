@@ -11,21 +11,18 @@
 
 class MainWindow;
 
+enum Status
+{
+	INACTIVE,
+	RECEIVING_CALL,
+	IN_CALL
+};
+
 class Client
 {
 
-	typedef struct
-	{
-		std::string username;
-		std::string ip;
-	} Contact;
+public:
 
-	enum Status
-	{
-		INACTIVE,
-		RECEIVING_CALL,
-		IN_CALL
-	};
 
 public:
 	Client();

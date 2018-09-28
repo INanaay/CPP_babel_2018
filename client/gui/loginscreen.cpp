@@ -36,6 +36,7 @@ void loginScreen::on_connect_button_clicked()
 
         boost::trim(m_username);
         std::cout << m_username << std::endl;
+        m_viewModel->setClientUsername(m_username);
 
         //m_client->connectToServer();
 

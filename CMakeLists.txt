@@ -41,6 +41,8 @@ add_executable(CPP_babel_client
         client/gui/loginscreen.cpp client/gui/loginscreen.hpp
         client/gui/mainwindow.hpp client/gui/mainwindow.cpp
         client/src/client/client.cpp client/inc/client/client.hpp
+        client/src/viewmodel/ViewModel.cpp client/inc/viewmodel/ViewModel.hpp
+        client/inc/common/contacts.hpp
         core/net/Socket.cpp
         core/net/Socket.hpp
         core/net/TcpServer.cpp
