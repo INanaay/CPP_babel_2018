@@ -40,17 +40,19 @@ namespace marguerite
 			//FIELDS
 			int m_port;
 			int m_sockfd;
-			std::string m_host;
-			sockaddr_in m_sockaddr;
 			bool m_binded;
 			bool m_listening;
 			bool m_connected;
+			std::string m_host;
+			sockaddr_in m_sockaddr;
+			IpType m_ipType;
+			ProtocolType m_protocol;
 
 		public:
 			//CTOR DTOR
             Socket(int ip_type, int protocol_type);
-			Socket(int sockfd, const sockaddr_in &addr);
             Socket(IpType ip_type, ProtocolType protocol_type);
+			Socket(int sockfd, const sockaddr_in &addr, IpType ip_type, ProtocolType protocol_type);
 			~Socket();
 
 			//FUNCTIONS
@@ -58,10 +60,14 @@ namespace marguerite
 			std::shared_ptr<Socket> mAccept();
 			void mBind(const std::string &host, int port);
 			void mConnect(const std::string &host, int port);
-			std::vector<uint8_t> mReceive(std::size_t amount);
+
 			void mReceive(uint8_t *dest, std::size_t amount);
+			std::vector<uint8_t> mReceive(std::size_t amount);
+			std::vector<uint8_t> mReceiveFrom(std::size_t amount, sockaddr_in &addr);
+
 			void mSend(const std::vector<uint8_t> &buffer);
 			void mSend(const uint8_t *buffer, std::size_t n);
+			void mSendTo(std::vector<uint8_t> &buffer, std::size_t amount, const std::string &host, int port);
 
 			//PROPERTIES
             int getSockfd() const;

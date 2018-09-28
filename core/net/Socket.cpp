@@ -16,21 +16,19 @@
 #include <iostream>
 #include "Socket.hpp"
 
-marguerite::net::Socket::Socket(int sockfd, const sockaddr_in &addr)
+marguerite::net::Socket::Socket(int sockfd, const sockaddr_in &addr, IpType iptype, ProtocolType prototype)
+: m_sockfd(sockfd), m_connected(true), m_listening(false), m_port(ntohs(addr.sin_port)), m_protocol(prototype)
 {
-    m_binded = false;
-    m_sockfd = sockfd;
-    m_connected = true;
-    m_port = ntohs(addr.sin_port);
-
     char ip[INET6_ADDRSTRLEN];
     switch (addr.sin_family)
     {
         case AF_INET:
+            m_ipType = IpType::V4;
             inet_ntop(AF_INET, &(addr.sin_addr), ip, INET_ADDRSTRLEN);
             m_host = std::string(ip, INET_ADDRSTRLEN);
             break;
         case AF_INET6:
+            m_ipType = IpType::V6;
             inet_ntop(AF_INET6, &(addr.sin_addr), ip, INET6_ADDRSTRLEN);
             m_host = std::string(ip, INET6_ADDRSTRLEN);
             break;
@@ -87,6 +85,8 @@ void marguerite::net::Socket::mBind(const std::string &host, int port)
 
 std::shared_ptr<marguerite::net::Socket> marguerite::net::Socket::mAccept()
 {
+    if (m_protocol != ProtocolType::TCP)
+        throw std::runtime_error("trying to accept tcp connection with udp socket.");
 	if (!m_binded || !m_listening)
 		throw std::runtime_error("trying to accept incoming connection on unbinded or non-listening socket.");
 
@@ -97,7 +97,7 @@ std::shared_ptr<marguerite::net::Socket> marguerite::net::Socket::mAccept()
 	if (sockfd == -1)
 		throw std::runtime_error("accepting incoming connection failed.");
 
-	auto client = std::make_shared<Socket>(sockfd, addr);
+	auto client = std::make_shared<Socket>(sockfd, addr, IpType::V4, ProtocolType::TCP);
 	return (client);
 }
 
@@ -127,7 +127,7 @@ void marguerite::net::Socket::mConnect(const std::string &host, int port)
 }
 int marguerite::net::Socket::available() const
 {
-	if (!m_connected)
+	if (!m_connected && m_protocol == ProtocolType::TCP)
 		return 0;
 
 	int amount;
@@ -139,7 +139,7 @@ int marguerite::net::Socket::available() const
 
 std::vector<uint8_t> marguerite::net::Socket::mReceive(std::size_t amount)
 {
-    auto ret = std::vector<uint8_t>(amount + 1);
+    auto ret = std::vector<uint8_t>(amount);
 
     read(m_sockfd, ret.data(), amount);
     return (std::move(ret));
@@ -150,6 +150,15 @@ void marguerite::net::Socket::mReceive(uint8_t *dest, std::size_t amount)
     read(m_sockfd, dest, amount);
 }
 
+std::vector<uint8_t> marguerite::net::Socket::mReceiveFrom(std::size_t amount, sockaddr_in &addr)
+{
+    socklen_t len = sizeof(addr);
+    auto ret = std::vector<uint8_t>(amount);
+
+    recvfrom(m_sockfd, ret.data(), amount, 0, ((sockaddr *)&addr), &len);
+    return (std::move(ret));
+}
+
 void marguerite::net::Socket::mSend(const std::vector<uint8_t> &buffer)
 {
     write(m_sockfd, buffer.data(), buffer.size());
@@ -158,6 +167,16 @@ void marguerite::net::Socket::mSend(const std::vector<uint8_t> &buffer)
 void marguerite::net::Socket::mSend(const uint8_t *buffer, std::size_t n)
 {
     write(m_sockfd, buffer, n);
+}
+
+void marguerite::net::Socket::mSendTo(std::vector<uint8_t> &buffer, std::size_t amount, const std::string &host, int port)
+{
+	sockaddr_in addr;
+	addr.sin_family = AF_INET;
+	addr.sin_addr.s_addr = inet_addr(host.c_str());
+	addr.sin_port = htons(port);
+
+	sendto(m_sockfd, buffer.data(), amount, 0, (sockaddr *)&addr, sizeof(addr));
 }
 
 int marguerite::net::Socket::getSockfd() const
