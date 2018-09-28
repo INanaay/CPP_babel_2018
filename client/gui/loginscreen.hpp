@@ -3,8 +3,12 @@
 
 #include <iostream>
 #include <QWidget>
+#include <client/inc/viewmodel/ViewModel.hpp>
 #include "mainwindow.hpp"
 #include "client/inc/client/client.hpp"
+
+
+class ViewModel;
 
 namespace Ui {
 class loginScreen;
@@ -17,7 +21,7 @@ class loginScreen : public QWidget
 public:
     explicit loginScreen(QWidget *parent = 0);
     ~loginScreen();
-    void setM_client(Client *m_client);
+    void setM_viewModel(ViewModel *m_viewModel);
 
 
 private slots:
@@ -25,9 +29,8 @@ private slots:
 
 private:
     Ui::loginScreen *ui;
-    MainWindow *m_mainWindow;
     std::string m_username;
-    Client *m_client;
+    ViewModel *m_viewModel;
 };
 
 #endif // LOGINSCREEN_HPP
