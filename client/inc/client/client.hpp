@@ -7,9 +7,18 @@
 
 #include <client/inc/audio/AudioManager.hpp>
 #include <client/inc/audio/EncodeManager.hpp>
+#include <client/gui/mainwindow.hpp>
+
+class MainWindow;
 
 class Client
 {
+
+	typedef struct
+	{
+		std::string username;
+		std::string ip;
+	} Contact;
 
 	enum Status
 	{
@@ -22,13 +31,14 @@ public:
 	Client();
 	void test();
 	void connectToServer();
+	void setM_username(const std::string &m_username);
+
 private:
 	AudioManager m_audioManager;
 	EncodeManager m_encodeManager;
 	std::string m_username;
 	Status m_clientStatus;
-public:
-	void setM_username(const std::string &m_username);
+	MainWindow *mainWindow;
 };
 
 #endif //CPP_BABEL_2018_CLIENT_HPP

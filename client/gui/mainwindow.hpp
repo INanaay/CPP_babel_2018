@@ -4,6 +4,11 @@
 #include <QStringListModel>
 #include <QMainWindow>
 #include <client/inc/client/client.hpp>
+#include <client/inc/viewmodel/ViewModel.hpp>
+
+class ViewModel;
+
+class Client;
 
 namespace Ui {
 class MainWindow;
@@ -17,15 +22,15 @@ public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
     void populateContactList(const std::vector<std::string> &list);
+    void setM_viewModel(ViewModel *m_viewModel);
+
 
 private:
     Ui::MainWindow *ui;
-    Client *m_client;
     QStringListModel *m_model;
     QStringList m_stringList;
+    ViewModel *m_viewModel;
 
-public:
-	void setM_client(Client *m_client);
 private slots:
     void on_callButton_clicked();
 };

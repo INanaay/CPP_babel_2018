@@ -15,7 +15,6 @@
 
 #define SAMPLE_RATE (48000)
 #define FRAMES_PER_BUFFER (480)
-#define NB_SECONDS (2)
 #define NB_CHANNELS (2)
 
 typedef struct

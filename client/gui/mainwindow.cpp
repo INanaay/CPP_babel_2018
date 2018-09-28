@@ -5,9 +5,9 @@
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
-    ui(new Ui::MainWindow),
-    m_client(nullptr)
+    ui(new Ui::MainWindow)
 {
+	std::cout << "sup" << std::endl;
     ui->setupUi(this);
 
     QRect desktopRect = QApplication::desktop()->availableGeometry(this);
@@ -15,10 +15,11 @@ MainWindow::MainWindow(QWidget *parent) :
     move(center.x() - width() * 0.5, center.y() - height() * 0.5);
     m_model = new QStringListModel(this);
 
-    std::vector<std::string> list;
+
+	std::vector<std::string> list;
     ui->contactsListView->setEditTriggers(0);
     populateContactList(list);
-
+    std::cout << "Initialized main window" << std::endl;
 }
 
 MainWindow::~MainWindow()
@@ -37,13 +38,13 @@ void MainWindow::populateContactList(const std::vector<std::string> &list)
         m_stringList.append(lol);
     }
 
+    std::cout << "mdr" << std::endl;
+
     m_model->setStringList(m_stringList);
 
     ui->contactsListView->setModel(m_model);
-}
+	std::cout << "mdr" << std::endl;
 
-void MainWindow::setM_client(Client *m_client) {
-	MainWindow::m_client = m_client;
 }
 
 void MainWindow::on_callButton_clicked()
@@ -53,4 +54,8 @@ void MainWindow::on_callButton_clicked()
     auto index = ui->contactsListView->currentIndex();
 
    std::cout << index.row() << std::endl;
+}
+
+void MainWindow::setM_viewModel(ViewModel *m_viewModel) {
+	MainWindow::m_viewModel = m_viewModel;
 }

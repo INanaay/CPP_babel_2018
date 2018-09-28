@@ -9,8 +9,7 @@
 
 loginScreen::loginScreen(QWidget *parent) :
     QWidget(parent),
-    ui(new Ui::loginScreen),
-    m_client(nullptr)
+    ui(new Ui::loginScreen)
 {
     ui->setupUi(this);
     ui->usernameErrorLabel->setVisible(false);
@@ -40,13 +39,10 @@ void loginScreen::on_connect_button_clicked()
 
         //m_client->connectToServer();
 
-        hide();
-        m_mainWindow = new MainWindow(this);
-        m_mainWindow->setM_client(this->m_client);
-        m_mainWindow->show();
+        m_viewModel->startMainApplication();
     }
 }
 
-void loginScreen::setM_client(Client *m_client) {
-	loginScreen::m_client = m_client;
+void loginScreen::setM_viewModel(ViewModel *m_viewModel) {
+	loginScreen::m_viewModel = m_viewModel;
 }

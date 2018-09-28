@@ -5,19 +5,22 @@
 #include <QPushButton>
 #include <client/gui/loginscreen.hpp>
 #include <QDesktopWidget>
-
+#include <client/inc/viewmodel/ViewModel.hpp>
 
 int main(int argc, char *argv[])
 {
 	QApplication a(argc, argv);
 
+	ViewModel viewModel;
+
+	viewModel.start();
+	/*
 	Client client;
 
 	loginScreen loginScreen;
 	loginScreen.setM_client(&client);
 	loginScreen.show();
-
-
+*/
 	//LoginScreen w;
 	//w.show();
 
