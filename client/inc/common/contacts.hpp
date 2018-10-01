@@ -11,6 +11,7 @@ typedef struct
 {
 	std::string username;
 	std::string ip;
+	int port;
 } Contact;
 
 

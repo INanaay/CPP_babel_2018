@@ -31,18 +31,30 @@ void ViewModel::startMainApplication()
 	if (m_mainWindow == nullptr)
 		throw std::exception();
 
+	m_mainWindow->setM_viewModel(this);
+
+	m_mainWindow->populateContactList(m_client->getM_contacts());
+
 	m_loginScreen->hide();
 	m_mainWindow->show();
-	m_mainWindow->setM_viewModel(this);
 }
 
-void ViewModel::populateContactList(const std::vector<Contact> &contacts) const
-{
-	//m_mainWindow->populateContactList();
-}
 
 void ViewModel::setClientUsername(const std::string &username)
 {
 	m_client->setM_username(username);
+}
+
+void ViewModel::connectToServer() const
+{
+	m_client->connectToServer();
+}
+
+void ViewModel::populateContactList() const
+{
+	std::cout << "wtf" << std::endl;
+
+	m_client->test();
+
 }
 

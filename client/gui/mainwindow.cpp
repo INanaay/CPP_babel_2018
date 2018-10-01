@@ -16,9 +16,8 @@ MainWindow::MainWindow(QWidget *parent) :
     m_model = new QStringListModel(this);
 
 
-	std::vector<std::string> list;
     ui->contactsListView->setEditTriggers(0);
-    populateContactList(list);
+    //populateContactList(list);
     std::cout << "Initialized main window" << std::endl;
 }
 
@@ -27,16 +26,17 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
-void MainWindow::populateContactList(const std::vector<std::string> &list)
+void MainWindow::populateContactList(const std::vector<Contact> &list)
 {
-    std::cout << "Populating list" << std::endl;
+    std::cout << "Populating list in main window" << std::endl;
     m_stringList.clear();
 
-    for (int index = 0; index < 3; index++)
+    for (const auto &contact : list)
     {
-        QString lol = QString::fromStdString("lol");
-        m_stringList.append(lol);
+    	std::cout << contact.username << std::endl;
+    	m_stringList.append( QString::fromStdString(contact.username));
     }
+
 
     m_model->setStringList(m_stringList);
 
