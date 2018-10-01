@@ -7,6 +7,7 @@
 
 #include <string>
 #include <unordered_map>
+#include <core/io/BinaryStreamReader.hpp>
 #include "Socket.hpp"
 
 namespace marguerite
@@ -24,18 +25,26 @@ namespace marguerite
             void stop();
             void start();
 
+            //PROPERTIES
+            std::vector<std::tuple<std::string, std::string, int>> getClientList();
+
         private:
             //FIELDS
             int m_epollfd;
             bool m_running;
             std::size_t m_max;
             Socket m_listener;
-            std::unordered_map<int, std::shared_ptr<Socket>> m_clients;
+            std::unordered_map<int, std::string> m_usernames;
+            std::unordered_map<int, std::vector<uint8_t>> m_buffers;
+            std::unordered_map<int, std::shared_ptr<marguerite::net::Socket>> m_clients;
 
-            //functions
+            //FUNCTIONS
             virtual void onClientAccepted(std::shared_ptr<Socket> socket);
             virtual void onMessageReceived(std::shared_ptr<Socket> socket, std::vector<uint8_t> message);
             virtual void onClientDisconnected(std::shared_ptr<Socket> socket);
+
+            //HANDLERS
+            void IntroduceHandler(std::shared_ptr<Socket>, marguerite::io::BinaryStreamReader &reader);
         };
     }
 }

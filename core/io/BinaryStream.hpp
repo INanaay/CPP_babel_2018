@@ -14,30 +14,41 @@
 #include <mutex>
 #include <memory>
 
-class BinaryStream
+namespace marguerite
 {
-public:
-	//CTOR DTOR
-	BinaryStream();
-	BinaryStream(const std::vector<uint8_t> &buffer);
-	BinaryStream(const std::uint8_t *buffer, std::size_t size);
-	~BinaryStream() = default;
+	namespace io
+	{
+		class BinaryStream
+		{
+		public:
+			//CTOR DTOR
+			BinaryStream();
 
-	//PUBLIC FUNCTIONS
-	void clear();
-	void forward(std::size_t n);
+			BinaryStream(const std::vector<uint8_t> &buffer);
 
-	//PROPERTIES
-	size_t getOffset() const;
-	size_t getLength() const;
+			BinaryStream(const std::uint8_t *buffer, std::size_t size);
 
-protected:
-	//FIELDS
-	std::mutex m_lock;
-	std::size_t m_offset;
-	std::size_t m_length;
-	std::vector<uint8_t> m_buffer;
-};
+			~BinaryStream() = default;
+
+			//PUBLIC FUNCTIONS
+			void clear();
+
+			void forward(std::size_t n);
+
+			//PROPERTIES
+			size_t getOffset() const;
+
+			size_t getLength() const;
+
+		protected:
+			//FIELDS
+			std::mutex m_lock;
+			std::size_t m_offset;
+			std::size_t m_length;
+			std::vector<uint8_t> m_buffer;
+		};
+	}
+}
 
 
 #endif //MARGUERITE_BINARYSTREAM_HPP

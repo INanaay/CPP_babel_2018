@@ -15,15 +15,30 @@ endif()
 LINK_DIRECTORIES(deps/libs)
 INCLUDE_DIRECTORIES(deps/incs)
 
-add_executable(CPP_babel_server
-        server/src/main.cpp
+set(CORE_SRC
         core/net/Socket.cpp
         core/net/Socket.hpp
         core/net/TcpServer.cpp
-        core/net/TcpServer.hpp)
+        core/net/TcpServer.hpp
+        core/io/BinaryStream.cpp
+        core/io/BinaryStream.hpp
+        core/io/BinaryStreamReader.cpp
+        core/io/BinaryStreamReader.hpp
+        core/io/BinaryStreamWriter.cpp
+        core/io/BinaryStreamWriter.hpp
+        )
+
+add_executable(CPP_babel_test
+        test/main.cpp
+        ${CORE_SRC})
+
+add_executable(CPP_babel_server
+        server/src/main.cpp
+        ${CORE_SRC})
 
 TARGET_LINK_LIBRARIES(CPP_babel_server
-        boost_system)
+        boost_system
+        ${CONAN_LIBS})
 
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTOUIC ON)
@@ -38,15 +53,15 @@ add_executable(CPP_babel_client
         client/src/main.cpp
         client/src/audio/AudioManager.cpp
         client/src/audio/EncodeManager.cpp
-        client/gui/loginscreen.cpp client/gui/loginscreen.hpp
-        client/gui/mainwindow.hpp client/gui/mainwindow.cpp
-        client/src/client/client.cpp client/inc/client/client.hpp
-        client/src/viewmodel/ViewModel.cpp client/inc/viewmodel/ViewModel.hpp
-        client/inc/common/contacts.hpp
-        core/net/Socket.cpp
-        core/net/Socket.hpp
-        core/net/TcpServer.cpp
-        core/net/TcpServer.hpp)
+        client/gui/loginscreen.cpp
+        client/gui/loginscreen.hpp
+        client/gui/mainwindow.hpp
+        client/gui/mainwindow.cpp
+        client/src/client/client.cpp
+        client/inc/client/client.hpp
+        client/src/viewmodel/ViewModel.cpp
+        client/inc/viewmodel/ViewModel.hpp
+        client/inc/common/contacts.hpp)
 
 target_link_libraries(CPP_babel_client
         Qt5::Core

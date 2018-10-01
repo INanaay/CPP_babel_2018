@@ -7,17 +7,27 @@
 
 #include "BinaryStream.hpp"
 
-class BinaryStreamReader : public BinaryStream
+namespace marguerite
 {
-public:
-    BinaryStreamReader(const std::vector<uint8_t> buffer);
-    BinaryStreamReader(const std::uint8_t *buffer, std::size_t length);
+    namespace io
+    {
+        class BinaryStreamReader : public BinaryStream
+        {
+        public:
+            BinaryStreamReader(const std::vector<uint8_t> buffer);
 
-    int readInt();
-    short readShort();
-    const std::string readString();
-    void readBytes(void *dest, std::size_t n);
-};
+            BinaryStreamReader(const std::uint8_t *buffer, std::size_t length);
+
+            int readInt();
+
+            short readShort();
+
+            const std::string readString();
+
+            void readBytes(void *dest, std::size_t n);
+        };
+    }
+}
 
 
 #endif //MARGUERITE_BINARYSTREAMREADER_HPP

@@ -6,29 +6,29 @@
 #include <iostream>
 #include "BinaryStreamWriter.hpp"
 
-BinaryStreamWriter::BinaryStreamWriter()
+marguerite::io::BinaryStreamWriter::BinaryStreamWriter()
 : BinaryStream()
 { }
 
-BinaryStreamWriter::BinaryStreamWriter(const std::vector<uint8_t> &buffer)
+marguerite::io::BinaryStreamWriter::BinaryStreamWriter(const std::vector<uint8_t> &buffer)
 : BinaryStream(buffer.data(), buffer.size())
 { }
 
-BinaryStreamWriter::BinaryStreamWriter(const std::uint8_t *buffer, std::size_t size)
+marguerite::io::BinaryStreamWriter::BinaryStreamWriter(const std::uint8_t *buffer, std::size_t size)
 : BinaryStream(buffer, size)
 { }
 
-void BinaryStreamWriter::writeInt(int value)
+void marguerite::io::BinaryStreamWriter::writeInt(int value)
 {
     writeBytes(&value, sizeof(int));
 }
 
-void BinaryStreamWriter::writeShort(short value)
+void marguerite::io::BinaryStreamWriter::writeShort(short value)
 {
     writeBytes(&value, sizeof(short));
 }
 
-void BinaryStreamWriter::writeString(const std::string &str)
+void marguerite::io::BinaryStreamWriter::writeString(const std::string &str)
 {
     short len = str.length();
 
@@ -36,7 +36,7 @@ void BinaryStreamWriter::writeString(const std::string &str)
     writeBytes(str.data(), str.length());
 }
 
-void BinaryStreamWriter::writeBytes(const void *buffer, std::size_t n)
+void marguerite::io::BinaryStreamWriter::writeBytes(const void *buffer, std::size_t n)
 {
     std::unique_lock<std::mutex> locker(m_lock);
 
@@ -52,7 +52,7 @@ void BinaryStreamWriter::writeBytes(const void *buffer, std::size_t n)
     m_offset += n;
 }
 
-std::vector<uint8_t> BinaryStreamWriter::getBuffer()
+std::vector<uint8_t> marguerite::io::BinaryStreamWriter::getBuffer()
 {
     return (std::vector<uint8_t>(m_buffer));
 

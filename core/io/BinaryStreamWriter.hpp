@@ -7,20 +7,31 @@
 
 #include "BinaryStream.hpp"
 
-class BinaryStreamWriter : public BinaryStream
+namespace marguerite
 {
-public:
-    BinaryStreamWriter();
-    BinaryStreamWriter(const std::vector<uint8_t> &buffer);
-    BinaryStreamWriter(const std::uint8_t *buffer, std::size_t size);
+    namespace io
+    {
+        class BinaryStreamWriter : public BinaryStream
+        {
+        public:
+            BinaryStreamWriter();
 
-    void writeInt(int value);
-    void writeShort(short value);
-    void writeString(const std::string &str);
-    void writeBytes(const void *buffer, std::size_t n);
+            BinaryStreamWriter(const std::vector<uint8_t> &buffer);
 
-    std::vector<uint8_t> getBuffer();
-};
+            BinaryStreamWriter(const std::uint8_t *buffer, std::size_t size);
+
+            void writeInt(int value);
+
+            void writeShort(short value);
+
+            void writeString(const std::string &str);
+
+            void writeBytes(const void *buffer, std::size_t n);
+
+            std::vector<uint8_t> getBuffer();
+        };
+    }
+}
 
 
 #endif //MARGUERITE_BINARYSTREAMWRITER_HPP

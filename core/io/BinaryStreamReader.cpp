@@ -6,30 +6,30 @@
 #include <iostream>
 #include "BinaryStreamReader.hpp"
 
-BinaryStreamReader::BinaryStreamReader(const std::uint8_t *buffer, std::size_t length)
+marguerite::io::BinaryStreamReader::BinaryStreamReader(const std::uint8_t *buffer, std::size_t length)
 : BinaryStream(buffer, length)
 { }
 
-BinaryStreamReader::BinaryStreamReader(const std::vector<uint8_t> buffer)
+marguerite::io::BinaryStreamReader::BinaryStreamReader(const std::vector<uint8_t> buffer)
 : BinaryStream(buffer)
 {
 }
 
-int BinaryStreamReader::readInt()
+int marguerite::io::BinaryStreamReader::readInt()
 {
     int ret = 0;
 
     readBytes(&ret, sizeof(ret));
     return (ret);
 }
-short BinaryStreamReader::readShort()
+short marguerite::io::BinaryStreamReader::readShort()
 {
     short ret = 0;
 
     readBytes(&ret, sizeof(ret));
     return (ret);
 }
-const std::string BinaryStreamReader::readString()
+const std::string marguerite::io::BinaryStreamReader::readString()
 {
     short len = readShort();
     char *buf = (char *)malloc(sizeof(char) * (len + 1));
@@ -42,7 +42,7 @@ const std::string BinaryStreamReader::readString()
     return (ret);
 }
 
-void BinaryStreamReader::readBytes(void *dest, std::size_t n)
+void marguerite::io::BinaryStreamReader::readBytes(void *dest, std::size_t n)
 {
     std::unique_lock<std::mutex> locker(m_lock);
 

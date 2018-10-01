@@ -54,6 +54,9 @@ marguerite::net::Socket::Socket(int ip_type, int protocol_type)
 		std::runtime_error("cannot start winsock.");
 #endif
 
+	m_ipType = (IpType)ip_type;
+	m_protocol = (ProtocolType)protocol_type;
+
 	m_sockfd = socket(ip_type, protocol_type, 0);
 	if (m_sockfd == -1)
 		throw std::runtime_error("cannot create socket.");
@@ -156,7 +159,17 @@ std::vector<uint8_t> marguerite::net::Socket::mReceiveFrom(std::size_t amount, s
     auto ret = std::vector<uint8_t>(amount);
 
     recvfrom(m_sockfd, ret.data(), amount, 0, ((sockaddr *)&addr), &len);
-    return (std::move(ret));
+    return std::move(ret);
+}
+
+std::vector<uint8_t> marguerite::net::Socket::mReceiveFrom(std::size_t amount, const std::string &host, int port)
+{
+	sockaddr_in addr;
+	addr.sin_family = AF_INET;
+	addr.sin_addr.s_addr = inet_addr(host.c_str());
+	addr.sin_port = htons(port);
+
+	return mReceiveFrom(amount, addr);
 }
 
 void marguerite::net::Socket::mSend(const std::vector<uint8_t> &buffer)
@@ -182,4 +195,14 @@ void marguerite::net::Socket::mSendTo(std::vector<uint8_t> &buffer, std::size_t 
 int marguerite::net::Socket::getSockfd() const
 {
     return m_sockfd;
+}
+
+int marguerite::net::Socket::getPort() const
+{
+	return m_port;
+}
+
+std::string marguerite::net::Socket::getHost() const
+{
+	return m_host;
 }

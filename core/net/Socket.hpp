@@ -64,6 +64,7 @@ namespace marguerite
 			void mReceive(uint8_t *dest, std::size_t amount);
 			std::vector<uint8_t> mReceive(std::size_t amount);
 			std::vector<uint8_t> mReceiveFrom(std::size_t amount, sockaddr_in &addr);
+			std::vector<uint8_t> mReceiveFrom(std::size_t amount, const std::string &host, int port);
 
 			void mSend(const std::vector<uint8_t> &buffer);
 			void mSend(const uint8_t *buffer, std::size_t n);
@@ -72,7 +73,8 @@ namespace marguerite
 			//PROPERTIES
             int getSockfd() const;
 			int available() const;
-
+			int getPort() const;
+			std::string getHost() const;
 		};
 	};
 };
