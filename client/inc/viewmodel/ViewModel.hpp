@@ -18,7 +18,7 @@ class ViewModel
 public:
 	ViewModel();
 	void start() const;
-	void startMainApplication() const;
+	void startMainApplication();
 	void populateContactList(const std::vector<Contact> &contacts) const;
 	void setClientUsername(const std::string &username);
 private:

@@ -5,12 +5,17 @@
 
 #include <client/inc/viewmodel/ViewModel.hpp>
 
-ViewModel::ViewModel()
+ViewModel::ViewModel() : m_mainWindow(nullptr)
 {
 	m_loginScreen = new loginScreen();
 	m_client = new Client();
-	m_mainWindow = new MainWindow();
+
+	if (m_client == nullptr || m_loginScreen == nullptr)
+		throw std::exception();
+
 	m_loginScreen->setM_viewModel(this);
+
+
 
 }
 
@@ -19,12 +24,15 @@ void ViewModel::start() const
 	m_loginScreen->show();
 }
 
-void ViewModel::startMainApplication() const
+void ViewModel::startMainApplication()
 {
+	m_mainWindow = new MainWindow();
+
+	if (m_mainWindow == nullptr)
+		throw std::exception();
+
 	m_loginScreen->hide();
-
 	m_mainWindow->show();
-
 	m_mainWindow->setM_viewModel(this);
 }
 
