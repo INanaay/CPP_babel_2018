@@ -62,6 +62,8 @@ add_executable(CPP_babel_client
         client/src/viewmodel/ViewModel.cpp
         client/inc/viewmodel/ViewModel.hpp
         client/inc/common/contacts.hpp
+        client/inc/client/readServerWorker.hpp
+        client/src/client/readServerWorker.cpp
         ${CORE_SRC}
         )
 
