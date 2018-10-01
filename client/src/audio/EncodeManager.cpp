@@ -31,13 +31,10 @@ encodedData EncodeManager::encode(const decodedData &data) {
 	encodedData encoded{};
 	auto sampleSize = FRAMES_PER_BUFFER * NB_CHANNELS;
 
-	std::cout << "ptdr" << std::endl;
 	encoded.audio.resize(sampleSize);
-	std::cout << "ptdr" << std::endl;
-
 	encoded.size = opus_encode_float(m_encoder, data.audio.data(), FRAMES_PER_BUFFER, encoded.audio.data(), sampleSize);
 
-	std::cout << "size = " << encoded.size << std::endl;
+	std::cout << "Encoded size = " << encoded.size << std::endl;
 
 	if (encoded.size < 0)
 		throw std::exception();
@@ -50,7 +47,7 @@ decodedData EncodeManager::decode(const encodedData &data) {
 
 
 	std::cout << "Trying to decode" << std::endl;
-	std::cout << "Size = " << data.size << std::endl;
+	std::cout << "received Size = " << data.size << std::endl;
 
 	decoded.audio.resize(FRAMES_PER_BUFFER * NB_CHANNELS);
 
