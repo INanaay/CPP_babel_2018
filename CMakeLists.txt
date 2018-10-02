@@ -65,7 +65,8 @@ add_executable(CPP_babel_client
         client/inc/common/contacts.hpp
         client/inc/client/readServerWorker.hpp
         client/src/client/readServerWorker.cpp
-        ${CORE_SRC} core/protocol/AudioMessage.cpp core/protocol/AudioMessage.hpp)
+        ${CORE_SRC} core/protocol/AudioMessage.cpp core/protocol/AudioMessage.hpp
+        client/src/client/udpWorker.cpp client/inc/client/udpWorker.hpp)
 
 target_link_libraries(CPP_babel_client
         Qt5::Core

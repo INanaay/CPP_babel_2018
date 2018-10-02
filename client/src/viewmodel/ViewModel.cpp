@@ -36,6 +36,7 @@ void ViewModel::startMainApplication()
 	m_loginScreen->hide();
 	m_mainWindow->show();
 	m_client->startWorker();
+	m_client->startUdpWorker();
 
 }
 

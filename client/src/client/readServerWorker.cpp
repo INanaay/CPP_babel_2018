@@ -18,12 +18,10 @@ void readServerWorker::run()
 
 		switch (id) {
 			case 1 :
-				std::cout << "Received contact List" << std::endl;
 				contactReceivedHandler(reader);
 				break;
 		}
 
-		std::cout << "Received shit" << std::endl;
 	}
 }
 
