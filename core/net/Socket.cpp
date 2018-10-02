@@ -60,6 +60,12 @@ marguerite::net::Socket::Socket(int ip_type, int protocol_type)
 	m_sockfd = socket(ip_type, protocol_type, 0);
 	if (m_sockfd == -1)
 		throw std::runtime_error("cannot create socket.");
+
+	struct sockaddr_in addr;
+	socklen_t addr_size = sizeof(struct sockaddr_in);
+
+	getpeername(m_sockfd, (struct sockaddr *)&addr, &addr_size);
+	m_host = std::string(inet_ntoa(addr.sin_addr));
 }
 
 marguerite::net::Socket::~Socket()
@@ -122,9 +128,6 @@ void marguerite::net::Socket::mConnect(const std::string &host, int port)
 	addr.sin_family = AF_INET;
 	addr.sin_addr.s_addr = inet_addr(host.c_str());
 	addr.sin_port = htons(port);
-
-	m_host = host;
-	m_port = port;
 
 	if (connect(m_sockfd, (sockaddr *)&addr, sizeof(addr)) == -1)
 		throw std::runtime_error("cannot connect to given remote addr/port.");
