@@ -32,7 +32,7 @@ set(CORE_SRC
         core/protocol/Message.hpp
         core/protocol/IntroduceMessage.cpp
         core/protocol/IntroduceMessage.hpp
-        core/protocol/LetsCall.cpp core/protocol/LetsCall.hpp)
+        core/protocol/LetsCallMessage.cpp core/protocol/LetsCallMessage.hpp)
 
 add_executable(CPP_babel_server
         server/src/main.cpp

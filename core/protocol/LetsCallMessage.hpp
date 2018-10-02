@@ -9,8 +9,9 @@
 #include <core/io/BinaryStreamWriter.hpp>
 #include <core/io/BinaryStreamReader.hpp>
 
-class LetsCall
+class LetsCallMessage
 {
+public:
     static void pack(marguerite::io::BinaryStreamWriter &writer, const std::string &username);
     static std::string unpack(marguerite::io::BinaryStreamReader &writer);
 };

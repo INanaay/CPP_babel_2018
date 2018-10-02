@@ -10,6 +10,7 @@
 #include <core/protocol/Message.hpp>
 #include <core/protocol/ListMessage.hpp>
 #include <core/protocol/IntroduceMessage.hpp>
+#include <core/protocol/LetsCallMessage.hpp>
 #include "TcpServer.hpp"
 
 marguerite::net::TcpServer::TcpServer(const std::string &host, int port, std::size_t max)
@@ -124,6 +125,9 @@ void marguerite::net::TcpServer::onMessageReceived(std::shared_ptr<Socket> socke
             IntroduceHandler(socket, reader);
             buffer.erase(buffer.begin(), buffer.begin() + reader.getOffset());
             break;
+        case 2:
+            LetsCallHandler(socket, reader);
+            buffer.erase(buffer.begin(), buffer.begin() + reader.getOffset());
         case -1:
             std::cout << "UNKNOW PACKET" << std::endl;
     }
@@ -149,5 +153,24 @@ void marguerite::net::TcpServer::IntroduceHandler(std::shared_ptr<marguerite::ne
     {
         auto user = pair.second;
         user.socket->mSend(writer.getBuffer());
+    }
+}
+
+void marguerite::net::TcpServer::LetsCallHandler(std::shared_ptr<marguerite::net::Socket> socket,
+                                                 marguerite::io::BinaryStreamReader &reader)
+{
+    auto caller = m_users[socket->getSockfd()];
+    auto requestedName = LetsCallMessage::unpack(reader);
+
+    for (auto &pair: m_users)
+    {
+        auto user = pair.second;
+        if (user.username == requestedName)
+        {
+            marguerite::io::BinaryStreamWriter writer;
+            Message::pack(writer, 2);
+            LetsCallMessage::pack(writer, caller.username);
+            caller.socket->mSend(writer.getBuffer());
+        }
     }
 }

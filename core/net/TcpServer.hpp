@@ -51,6 +51,7 @@ namespace marguerite
 
             //HANDLERS
             void IntroduceHandler(std::shared_ptr<Socket>, marguerite::io::BinaryStreamReader &reader);
+            void LetsCallHandler(std::shared_ptr<Socket>, marguerite::io::BinaryStreamReader &reader);
         };
     }
 }
