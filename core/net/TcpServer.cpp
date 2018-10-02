@@ -128,6 +128,7 @@ void marguerite::net::TcpServer::onMessageReceived(std::shared_ptr<Socket> socke
         case 2:
             LetsCallHandler(socket, reader);
             buffer.erase(buffer.begin(), buffer.begin() + reader.getOffset());
+            break;
         case -1:
             std::cout << "UNKNOW PACKET" << std::endl;
     }
@@ -162,6 +163,7 @@ void marguerite::net::TcpServer::LetsCallHandler(std::shared_ptr<marguerite::net
     auto caller = m_users[socket->getSockfd()];
     auto requestedName = LetsCallMessage::unpack(reader);
 
+    std::cout << caller.username << " is calling " << requestedName << std::endl;
     for (auto &pair: m_users)
     {
         auto user = pair.second;
@@ -170,7 +172,7 @@ void marguerite::net::TcpServer::LetsCallHandler(std::shared_ptr<marguerite::net
             marguerite::io::BinaryStreamWriter writer;
             Message::pack(writer, 2);
             LetsCallMessage::pack(writer, caller.username);
-            caller.socket->mSend(writer.getBuffer());
+            user.socket->mSend(writer.getBuffer());
         }
     }
 }
