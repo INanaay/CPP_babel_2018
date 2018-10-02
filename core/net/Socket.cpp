@@ -14,6 +14,7 @@
 #include <sys/ioctl.h>
 #include <memory>
 #include <iostream>
+#include <cstring>
 #include "Socket.hpp"
 
 marguerite::net::Socket::Socket(int sockfd, const sockaddr_in &addr, IpType iptype, ProtocolType prototype)
@@ -61,10 +62,11 @@ marguerite::net::Socket::Socket(int ip_type, int protocol_type)
 	if (m_sockfd == -1)
 		throw std::runtime_error("cannot create socket.");
 
-	struct sockaddr_in addr;
-	socklen_t addr_size = sizeof(struct sockaddr_in);
+	sockaddr_in addr;
+	socklen_t addr_size = sizeof(sockaddr_in);
 
-	getpeername(m_sockfd, (struct sockaddr *)&addr, &addr_size);
+	getpeername(m_sockfd, (sockaddr *)&addr, &addr_size);
+    m_port = ntohs(addr.sin_port);
 	m_host = std::string(inet_ntoa(addr.sin_addr));
 }
 

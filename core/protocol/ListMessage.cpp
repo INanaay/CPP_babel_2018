@@ -4,19 +4,22 @@
 
 #include <core/io/BinaryStreamWriter.hpp>
 #include <core/io/BinaryStreamReader.hpp>
+#include <core/net/TcpServer.hpp>
 
 #include "ListMessage.hpp"
 
 void
 ListMessage::pack
-(marguerite::io::BinaryStreamWriter &writer, std::vector<std::tuple<std::string, std::string, int>> &contacts)
+(marguerite::io::BinaryStreamWriter &writer, const std::unordered_map<int, marguerite::net::User> &users)
 {
-    writer.writeInt(contacts.size());
-    for (auto &tuple: contacts)
+    writer.writeInt(users.size());
+    for (auto &pair: users)
     {
-        writer.writeString(std::get<0>(tuple));
-        writer.writeString(std::get<1>(tuple));
-        writer.writeInt(std::get<2>(tuple));
+        auto user = pair.second;
+
+        writer.writeString(user.username);
+        writer.writeString(user.udpHost);
+        writer.writeInt(user.udpPort);
     }
 }
 

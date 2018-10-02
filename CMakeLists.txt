@@ -31,18 +31,14 @@ set(CORE_SRC
         core/protocol/Message.cpp
         core/protocol/Message.hpp
         core/protocol/IntroduceMessage.cpp
-        core/protocol/IntroduceMessage.hpp)
-
-add_executable(CPP_babel_test
-        test/main.cpp
-        ${CORE_SRC})
+        core/protocol/IntroduceMessage.hpp
+        core/protocol/LetsCall.cpp core/protocol/LetsCall.hpp)
 
 add_executable(CPP_babel_server
         server/src/main.cpp
         ${CORE_SRC})
 
 TARGET_LINK_LIBRARIES(CPP_babel_server
-        boost_system
         ${CONAN_LIBS})
 
 set(CMAKE_AUTOMOC ON)
@@ -69,8 +65,7 @@ add_executable(CPP_babel_client
         client/inc/common/contacts.hpp
         client/inc/client/readServerWorker.hpp
         client/src/client/readServerWorker.cpp
-        ${CORE_SRC}
-        )
+        ${CORE_SRC} core/protocol/AudioMessage.cpp core/protocol/AudioMessage.hpp)
 
 target_link_libraries(CPP_babel_client
         Qt5::Core

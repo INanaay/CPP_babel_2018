@@ -14,8 +14,8 @@ class IntroduceMessage
 {
 public:
     //FUNCTIONS
-    std::tuple<std::string, std::string, int> unpack(marguerite::io::BinaryStreamReader &reader);
-    void pack(marguerite::io::BinaryStreamWriter &writer, const std::string &username, const std::string &host, int port);
+    static std::tuple<std::string, std::string, int> unpack(marguerite::io::BinaryStreamReader &reader);
+    static void pack(marguerite::io::BinaryStreamWriter &writer, const std::string &username, const std::string &host, int port);
 };
 
 
