@@ -7,6 +7,9 @@
 
 #include <vector>
 #include <cstdint>
+#include "core/io/BinaryStream.hpp"
+#include "core/io/BinaryStreamReader.hpp"
+#include "core/io/BinaryStreamWriter.hpp"
 
 class Message
 {
