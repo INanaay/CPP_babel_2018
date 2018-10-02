@@ -91,6 +91,8 @@ void marguerite::net::Socket::mBind(const std::string &host, int port)
 	if (bind(m_sockfd, (sockaddr *)&laddr, sizeof(laddr)) == -1)
 		throw std::runtime_error("cannot bind the socket.");
 
+	m_host = host;
+	m_port = port;
 	m_binded = true;
 }
 

@@ -137,10 +137,8 @@ void marguerite::net::TcpServer::IntroduceHandler(std::shared_ptr<marguerite::ne
 
     user.socket = socket;
     user.username = std::get<0>(tuple);
-    user.udpHost = std::get<1>(tuple);
+    user.udpHost = socket->getHost();
     user.udpPort = std::get<2>(tuple);
-
-
     m_users.insert({socket->getSockfd(), user});
 
     marguerite::io::BinaryStreamWriter writer;

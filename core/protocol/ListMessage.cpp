@@ -12,7 +12,7 @@ void
 ListMessage::pack
 (marguerite::io::BinaryStreamWriter &writer, const std::unordered_map<int, marguerite::net::User> &users)
 {
-    writer.writeInt(users.size());
+    writer.writeInt((int)users.size());
     for (auto &pair: users)
     {
         auto user = pair.second;

@@ -9,6 +9,7 @@
 #include <core/net/TcpServer.hpp>
 #include <client/inc/audio/AudioManager.hpp>
 #include <client/inc/audio/EncodeManager.hpp>
+#include <netdb.h>
 
 int main(int argc, char **argv)
 {
