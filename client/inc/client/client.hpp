@@ -53,6 +53,7 @@ private:
 	MainWindow *mainWindow;
 	std::vector<Contact> m_contacts;
 	marguerite::net::Socket m_socket;
+	marguerite::net::Socket m_udpSocket;
 	ViewModel *m_viewModel;
 
 };

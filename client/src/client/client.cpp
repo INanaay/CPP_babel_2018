@@ -13,9 +13,11 @@
 
 
 Client::Client() : m_audioManager(), m_encodeManager(), m_clientStatus(INACTIVE), m_socket(marguerite::net::IpType::V4,
-	marguerite::net::ProtocolType::TCP), m_viewModel(nullptr), m_udpWorker(nullptr)
+	marguerite::net::ProtocolType::TCP), m_viewModel(nullptr), m_udpWorker(nullptr), m_udpSocket(marguerite::net::IpType::V4,
+												     marguerite::net::ProtocolType::UDP)
 {
 	std::cout << "Creating client" << std::endl;
+	m_udpSocket.mBind()
 
 }
 
@@ -34,23 +36,21 @@ void Client::connectToServer()
 
 	std::cout << "Trying to connect" << std::endl;
 
-	m_socket.mConnect("127.0.0.1", 6666);
+	//m_socket.mConnect("127.0.0.1", 6666);
 
-	//m_socket.mConnect("192.168.0.104", 6666);
+	m_socket.mConnect("192.168.0.104", 6666);
 	marguerite::io::BinaryStreamWriter writer;
 
-	Message().pack(writer, 0);
-
-	IntroduceMessage().pack(writer, m_username, m_socket.getHost(), m_socket.getPort());
+	Message::pack(writer, 0);
+	IntroduceMessage().pack(writer, m_username, m_udpSocket.getHost(), m_udpSocket.getPort());
 
 	m_socket.mSend(writer.getBuffer());
-
 	auto buffer = m_socket.mReceive(1024);
-	marguerite::io::BinaryStreamReader reader(buffer);
 
-	auto id = Message().unpack(reader);
-	std::cout << "received message with id: " << id << std::endl;
-	auto list = ListMessage().unpack(reader);
+	marguerite::io::BinaryStreamReader reader(buffer);
+	Message::unpack(reader);
+	auto list = ListMessage::unpack(reader);
+	std::cout << "unpack" << std::endl;
 	getContacts(list);
 /*
 	marguerite::io::BinaryStreamReader reader(buffer);
@@ -102,10 +102,11 @@ const std::string &Client::getM_username() const {
 
 void Client::startUdpWorker()
 {
-	std::cout << "starting udp worker " << std::endl;
 	m_udpWorker = new udpWorker();
 	m_udpWorker->m_parent = this;
 	m_udpWorker->m_viewModel = m_viewModel;
+	m_udpWorker->m_udpSocket = &m_udpSocket;
+	m_worker->start();
 }
 
 

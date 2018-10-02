@@ -4,9 +4,7 @@
 
 #include "client/inc/client/udpWorker.hpp"
 
-
-
 void udpWorker::run()
 {
-	std::cout << "Started udp worker" << std::endl;
+
 }
