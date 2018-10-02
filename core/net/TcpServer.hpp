@@ -16,11 +16,11 @@ namespace marguerite
     {
         struct User
         {
-            User(std::shared_ptr<Socket> socket, const std::string &username) : socket(socket), username(username) {}
-
             std::string username;
             std::vector<uint8_t> buffer;
             std::shared_ptr<Socket> socket;
+            std::string udpHost;
+            int udpPort;
         };
 
         class TcpServer
@@ -40,7 +40,7 @@ namespace marguerite
             bool m_running;
             std::size_t m_max;
             Socket m_listener;
-            std::unordered_map<int, std::shared_ptr<User>> m_users;
+            std::unordered_map<int, User> m_users;
             std::unordered_map<int, std::vector<uint8_t>> m_buffers;
             std::unordered_map<int, std::shared_ptr<marguerite::net::Socket>> m_clients;
 
