@@ -42,6 +42,7 @@ public:
 	void setM_contacts(const std::vector<Contact> &m_contacts);
 	void setM_viewModel(ViewModel *m_viewModel);
 	const std::string &getM_username() const;
+	void startCall(int index);
 
 private:
 	readServerWorker *m_worker;

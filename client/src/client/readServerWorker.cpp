@@ -20,6 +20,9 @@ void readServerWorker::run()
 			case 1 :
 				contactReceivedHandler(reader);
 				break;
+			case 2:
+				std::cout << "Received call" << std::endl;
+				break;
 		}
 
 	}

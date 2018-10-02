@@ -50,7 +50,8 @@ void MainWindow::on_callButton_clicked()
 
 	auto index = ui->contactsListView->currentIndex();
 
-	std::cout << index.row() << std::endl;
+	//std::cout << index.row() << std::endl;
+	m_viewModel->startCall(index.row());
 }
 
 void MainWindow::setM_viewModel(const ViewModel *m_viewModel) {

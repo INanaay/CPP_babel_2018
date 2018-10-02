@@ -57,3 +57,9 @@ void ViewModel::populateContactList() const
 
 }
 
+void ViewModel::startCall(int index) const
+{
+	m_client->startCall(index);
+}
+
+

@@ -17,6 +17,7 @@ class ViewModel
 {
 public:
 	ViewModel();
+	void startCall(int index) const;
 	void start() const;
 	void startMainApplication();
 	void connectToServer() const;
