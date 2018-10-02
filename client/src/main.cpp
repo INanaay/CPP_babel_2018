@@ -16,18 +16,6 @@ int main(int argc, char *argv[])
 	ViewModel viewModel;
 
 	viewModel.start();
-	/*
-	Client client;
-
-	loginScreen loginScreen;
-	loginScreen.setM_client(&client);
-	loginScreen.show();
-
-	//LoginScreen w;
-	//w.show();
-
-	 */
-
 	return a.exec();
 }
 

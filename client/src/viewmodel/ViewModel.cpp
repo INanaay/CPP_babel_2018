@@ -14,6 +14,7 @@ ViewModel::ViewModel() : m_mainWindow(nullptr)
 	if (m_client == nullptr || m_loginScreen == nullptr)
 		throw std::exception();
 
+	m_client->setM_viewModel(this);
 	m_loginScreen->setM_viewModel(this);
 }
 
@@ -24,14 +25,14 @@ void ViewModel::start() const
 
 void ViewModel::startMainApplication()
 {
-
 	m_mainWindow = new MainWindow();
 
 	if (m_mainWindow == nullptr)
 		throw std::exception();
 
 	m_mainWindow->setM_viewModel(this);
-	m_mainWindow->populateContactList(m_client->getM_contacts());
+	populateContactList();
+	//m_mainWindow->populateContactList(m_client->getM_contacts());
 	m_loginScreen->hide();
 	m_mainWindow->show();
 	m_client->startWorker();
@@ -47,5 +48,11 @@ void ViewModel::setClientUsername(const std::string &username)
 void ViewModel::connectToServer() const
 {
 	m_client->connectToServer();
+}
+
+void ViewModel::populateContactList() const
+{
+	m_mainWindow->populateContactList(m_client->getM_contacts());
+
 }
 
