@@ -13,14 +13,21 @@
   <property name="windowTitle">
    <string>Form</string>
   </property>
+  <property name="styleSheet">
+   <string notr="true">background-color: rgb(114, 159, 207);</string>
+  </property>
   <widget class="QPushButton" name="connect_button">
    <property name="geometry">
     <rect>
-     <x>150</x>
-     <y>140</y>
-     <width>92</width>
+     <x>110</x>
+     <y>120</y>
+     <width>171</width>
      <height>36</height>
     </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">background-color: rgb(115, 210, 22);
+color: rgb(238, 238, 236);</string>
    </property>
    <property name="text">
     <string>Connect</string>
@@ -35,17 +42,12 @@
      <height>36</height>
     </rect>
    </property>
-  </widget>
-  <widget class="QLabel" name="label">
-   <property name="geometry">
-    <rect>
-     <x>110</x>
-     <y>50</y>
-     <width>101</width>
-     <height>20</height>
-    </rect>
+   <property name="styleSheet">
+    <string notr="true">    border-style: solid;
+background-color: rgb(238, 238, 236);
+    border-radius: 4px;</string>
    </property>
-   <property name="text">
+   <property name="placeholderText">
     <string>Username</string>
    </property>
   </widget>
@@ -59,7 +61,20 @@
     </rect>
    </property>
    <property name="text">
-    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; color:#ef2929;&quot;&gt;Enter a valid username&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; color:#eeeeec;&quot;&gt;Enter a valid username&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="appNameLabel">
+   <property name="geometry">
+    <rect>
+     <x>170</x>
+     <y>20</y>
+     <width>61</width>
+     <height>41</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:16pt; color:#eeeeec;&quot;&gt;Babel&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
    </property>
   </widget>
  </widget>

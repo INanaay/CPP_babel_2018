@@ -13,7 +13,9 @@
 #include "client/inc/common/contacts.hpp"
 #include "readServerWorker.hpp"
 
+class ViewModel;
 class MainWindow;
+class readServerWorker;
 
 enum Status
 {
@@ -30,10 +32,13 @@ public:
 	void test();
 	void connectToServer();
 	void setM_username(const std::string &m_username);
-	void getContacts(marguerite::io::BinaryStreamReader &reader);
+	void getContacts(std::vector<std::tuple<std::string, std::string, int>> &contacts);
 	const std::vector<Contact> &getM_contacts() const;
 	void startWorker();
 	void setM_clientStatus(Status m_clientStatus);
+	void setM_contacts(const std::vector<Contact> &m_contacts);
+	void setM_viewModel(ViewModel *m_viewModel);
+	const std::string &getM_username() const;
 
 private:
 	readServerWorker *m_worker;
@@ -43,6 +48,9 @@ private:
 	Status m_clientStatus;
 	MainWindow *mainWindow;
 	std::vector<Contact> m_contacts;
+	marguerite::net::Socket m_socket;
+	ViewModel *m_viewModel;
+
 };
 
 #endif //CPP_BABEL_2018_CLIENT_HPP

@@ -10,6 +10,8 @@ MainWindow::MainWindow(QWidget *parent) :
 	std::cout << "sup" << std::endl;
     ui->setupUi(this);
 
+    setWindowTitle("Babel");
+
     QRect desktopRect = QApplication::desktop()->availableGeometry(this);
     QPoint center = desktopRect.center();
     move(center.x() - width() * 0.5, center.y() - height() * 0.5);
