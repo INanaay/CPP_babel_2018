@@ -7,6 +7,9 @@
 #include <cstring>
 #include <core/io/BinaryStreamWriter.hpp>
 #include <core/io/BinaryStreamReader.hpp>
+#include <core/protocol/Message.hpp>
+#include <core/protocol/ListMessage.hpp>
+#include <core/protocol/IntroduceMessage.hpp>
 #include "TcpServer.hpp"
 
 marguerite::net::TcpServer::TcpServer(const std::string &host, int port, std::size_t max)
@@ -114,70 +117,38 @@ void marguerite::net::TcpServer::onMessageReceived(std::shared_ptr<Socket> socke
     std::vector<uint8_t> &buffer = m_buffers[socket->getSockfd()];
     buffer.insert(buffer.begin(), std::make_move_iterator(message.begin()), std::make_move_iterator(message.end()));
 
-    std::cout << "starting to read received message." << std::endl;
     marguerite::io::BinaryStreamReader reader(buffer);
 
-    auto magic = reader.readString();
-    if (magic != "BABEL")
-        return;
-
-    auto id = reader.readInt();
-    auto length = reader.readInt();
-    auto remaining = reader.getLength() - reader.getOffset();
-
-    if (length > remaining)
-        return;
-
+    int id = Message().unpack(reader);
     switch (id)
     {
         case 0:
             IntroduceHandler(socket, reader);
             buffer.erase(buffer.begin(), buffer.begin() + reader.getOffset());
             break;
+        case -1:
+            std::cout << "UNKNOW PACKET" << std::endl;
     }
 }
 
-std::vector<std::tuple<std::string, std::string, int>> marguerite::net::TcpServer::getClientList()
+void marguerite::net::TcpServer::IntroduceHandler(std::shared_ptr<marguerite::net::Socket> socket,
+                                                  marguerite::io::BinaryStreamReader &reader)
 {
-    std::vector<std::tuple<std::string, std::string, int>> ret;
+    auto tuple = IntroduceMessage().unpack(reader);
+
+    std::cout << "new user with username " << std::get<0>(tuple) << "from " << std::get<1>(tuple) << ":" << std::get<2>(tuple);
+    m_users.insert({socket->getSockfd(), tuple});
+
+    marguerite::io::BinaryStreamWriter writer;
+    Message().pack(writer, 1);
+    std::vector<std::tuple<std::string, std::string, int>> infos;
+    for (auto &pair: m_users)
+        infos.push_back(pair.second);
+    ListMessage().pack(writer, infos);
 
     for (auto &pair: m_clients)
     {
-        auto fd = pair.first;
-        auto sock = m_clients[fd];
-        auto username = m_usernames[fd];
-
-        ret.push_back(std::make_tuple(username, sock->getHost(), sock->getPort()));
+        auto client = pair.second;
+        client->mSend(writer.getBuffer());
     }
-
-    return (std::move(ret));
-}
-
-void marguerite::net::TcpServer::IntroduceHandler(std::shared_ptr<marguerite::net::Socket> socket, marguerite::io::BinaryStreamReader &reader)
-{
-    std::cout << "introduce handler." << std::endl;
-    m_usernames[socket->getSockfd()] = reader.readString();
-
-    marguerite::io::BinaryStreamWriter bodyWriter;
-    marguerite::io::BinaryStreamWriter headerWriter;
-
-    headerWriter.writeString("BABEL");
-    headerWriter.writeInt(1);
-
-    auto list = getClientList();
-    for (auto &tuple: list)
-    {
-        bodyWriter.writeString(std::get<0>(tuple));
-        bodyWriter.writeString(std::get<1>(tuple));
-        bodyWriter.writeInt(std::get<2>(tuple));
-    }
-    headerWriter.writeInt(bodyWriter.getLength());
-
-    auto header = headerWriter.getBuffer();
-    auto body = bodyWriter.getBuffer();
-    std::vector<uint8_t> buffer;
-    buffer.insert(buffer.begin(), std::make_move_iterator(header.begin()), std::make_move_iterator(header.end()));
-    buffer.insert(buffer.end(), std::make_move_iterator(body.begin()), std::make_move_iterator(body.end()));
-
-    socket->mSend(buffer);
 }
