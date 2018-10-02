@@ -13,7 +13,7 @@
 
 
 Client::Client() : m_audioManager(), m_encodeManager(), m_clientStatus(INACTIVE), m_socket(marguerite::net::IpType::V4,
-	marguerite::net::ProtocolType::TCP), m_viewModel(nullptr)
+	marguerite::net::ProtocolType::TCP), m_viewModel(nullptr), m_udpWorker(nullptr)
 {
 	std::cout << "Creating client" << std::endl;
 
@@ -52,7 +52,6 @@ void Client::connectToServer()
 	std::cout << "received message with id: " << id << std::endl;
 	auto list = ListMessage().unpack(reader);
 	getContacts(list);
-
 /*
 	marguerite::io::BinaryStreamReader reader(buffer);
 	std::cout << reader.readString() << std::endl;
@@ -99,6 +98,14 @@ void Client::setM_viewModel(ViewModel *m_viewModel) {
 
 const std::string &Client::getM_username() const {
 	return m_username;
+}
+
+void Client::startUdpWorker()
+{
+	std::cout << "starting udp worker " << std::endl;
+	m_udpWorker = new udpWorker();
+	m_udpWorker->m_parent = this;
+	m_udpWorker->m_viewModel = m_viewModel;
 }
 
 
