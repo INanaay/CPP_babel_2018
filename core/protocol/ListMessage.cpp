@@ -29,4 +29,6 @@ ListMessage::unpack
     int count = reader.readInt();
     for (int i = 0; i < count; i++)
         contacts.push_back({reader.readString(), reader.readString(), reader.readInt()});
+
+    return (std::move(contacts));
 }

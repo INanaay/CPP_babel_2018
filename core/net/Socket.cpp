@@ -123,6 +123,9 @@ void marguerite::net::Socket::mConnect(const std::string &host, int port)
 	addr.sin_addr.s_addr = inet_addr(host.c_str());
 	addr.sin_port = htons(port);
 
+	m_host = host;
+	m_port = port;
+
 	if (connect(m_sockfd, (sockaddr *)&addr, sizeof(addr)) == -1)
 		throw std::runtime_error("cannot connect to given remote addr/port.");
 
