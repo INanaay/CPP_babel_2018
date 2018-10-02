@@ -15,8 +15,8 @@ private:
 
 public:
     //FUNCTIONS
-    std::vector<std::tuple<std::string, std::string, int>> unpack(marguerite::io::BinaryStreamReader &reader);
-    void pack(marguerite::io::BinaryStreamWriter &writer, std::vector<std::tuple<std::string, std::string, int>> &contacts);
+    static std::vector<std::tuple<std::string, std::string, int>> unpack(marguerite::io::BinaryStreamReader &reader);
+    static void pack(marguerite::io::BinaryStreamWriter &writer, std::vector<std::tuple<std::string, std::string, int>> &contacts);
 };
 
 

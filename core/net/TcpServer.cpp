@@ -107,8 +107,7 @@ void marguerite::net::TcpServer::onClientDisconnected(std::shared_ptr<marguerite
 
 void marguerite::net::TcpServer::onClientAccepted(std::shared_ptr<Socket> socket)
 {
-    m_buffers.insert({socket->getSockfd(), std::vector<uint8_t>(512)});
-
+    m_users.insert({socket->getSockfd(), std::make_shared<User>(socket)});
     std::cout << "client connected." << std::endl;
 }
 
@@ -119,7 +118,7 @@ void marguerite::net::TcpServer::onMessageReceived(std::shared_ptr<Socket> socke
 
     marguerite::io::BinaryStreamReader reader(buffer);
 
-    int id = Message().unpack(reader);
+    int id = Message::unpack(reader);
     switch (id)
     {
         case 0:
@@ -134,17 +133,14 @@ void marguerite::net::TcpServer::onMessageReceived(std::shared_ptr<Socket> socke
 void marguerite::net::TcpServer::IntroduceHandler(std::shared_ptr<marguerite::net::Socket> socket,
                                                   marguerite::io::BinaryStreamReader &reader)
 {
-    auto tuple = IntroduceMessage().unpack(reader);
-
-    std::cout << "new user with username " << std::get<0>(tuple) << "from " << std::get<1>(tuple) << ":" << std::get<2>(tuple);
-    m_users.insert({socket->getSockfd(), tuple});
+    auto tuple = IntroduceMessage::unpack(reader);
 
     marguerite::io::BinaryStreamWriter writer;
-    Message().pack(writer, 1);
+    Message::pack(writer, 1);
     std::vector<std::tuple<std::string, std::string, int>> infos;
     for (auto &pair: m_users)
         infos.push_back(pair.second);
-    ListMessage().pack(writer, infos);
+    ListMessage::pack(writer, infos);
 
     for (auto &pair: m_clients)
     {
