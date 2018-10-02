@@ -5,6 +5,7 @@
 #include <QMainWindow>
 #include <client/inc/client/client.hpp>
 #include <client/inc/viewmodel/ViewModel.hpp>
+#include "client/inc/common/contacts.hpp"
 
 class ViewModel;
 
@@ -19,17 +20,17 @@ class MainWindow : public QMainWindow
     Q_OBJECT
 
 public:
-    explicit MainWindow(QWidget *parent = 0);
+	explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
-    void populateContactList(const std::vector<std::string> &list);
+    void populateContactList(const std::vector<Contact> &list);
     void setM_viewModel(const ViewModel *m_viewModel);
 
 
 private:
-    Ui::MainWindow *ui;
-    QStringListModel *m_model;
-    QStringList m_stringList;
-    const ViewModel *m_viewModel;
+	Ui::MainWindow *ui;
+	QStringListModel *m_model;
+	QStringList m_stringList;
+	const ViewModel *m_viewModel;
 
 private slots:
     void on_callButton_clicked();

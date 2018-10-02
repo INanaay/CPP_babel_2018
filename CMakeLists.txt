@@ -66,7 +66,11 @@ add_executable(CPP_babel_client
         client/inc/client/client.hpp
         client/src/viewmodel/ViewModel.cpp
         client/inc/viewmodel/ViewModel.hpp
-        client/inc/common/contacts.hpp)
+        client/inc/common/contacts.hpp
+        client/inc/client/readServerWorker.hpp
+        client/src/client/readServerWorker.cpp
+        ${CORE_SRC}
+        )
 
 target_link_libraries(CPP_babel_client
         Qt5::Core

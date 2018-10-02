@@ -19,7 +19,8 @@ public:
 	ViewModel();
 	void start() const;
 	void startMainApplication();
-	void populateContactList(const std::vector<Contact> &contacts) const;
+	void connectToServer() const;
+	void populateContactList() const;
 	void setClientUsername(const std::string &username);
 private:
 	MainWindow *m_mainWindow;
