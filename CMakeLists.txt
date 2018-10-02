@@ -26,7 +26,12 @@ set(CORE_SRC
         core/io/BinaryStreamReader.hpp
         core/io/BinaryStreamWriter.cpp
         core/io/BinaryStreamWriter.hpp
-        )
+        core/protocol/ListMessage.cpp
+        core/protocol/ListMessage.hpp
+        core/protocol/Message.cpp
+        core/protocol/Message.hpp
+        core/protocol/IntroduceMessage.cpp
+        core/protocol/IntroduceMessage.hpp)
 
 add_executable(CPP_babel_test
         test/main.cpp
