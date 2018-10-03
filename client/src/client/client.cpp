@@ -111,10 +111,6 @@ void Client::startUdpWorker()
 	m_udpWorker->m_udpSocket = &m_udpSocket;
 }
 
-void Client::stopCall()
-{
-	m_clientStatus = INACTIVE;
-}
 
 void Client::tryToCall(int index)
 {
@@ -130,12 +126,12 @@ void Client::tryToCall(int index)
 	m_udpWorker->port = contact.port;
 	m_udpWorker->ip = contact.ip;
 	m_clientStatus = ACTIVE;
-	//m_udpWorker->start();
+	m_udpWorker->start();
 	m_audioManager.startAudioRecording();
 
 
 	m_timer.start(5);
-	
+
 	connect(&m_timer, &QTimer::timeout, this,[this, contact] () {
 		auto sample = m_audioManager.getLastRecord();
 
@@ -153,27 +149,6 @@ void Client::tryToCall(int index)
 			m_udpSocket.mSendTo(buffer, buffer.size(), contact.ip, contact.port);
 		}
 	});
-
-	/*
-	while (1)
-	{
-		auto sample = m_audioManager.getLastRecord();
-
-		if (sample.size > 0)
-		{
-			auto encodedData = m_encodeManager.encode(sample);
-
-			marguerite::io::BinaryStreamWriter writer;
-
-			Message::pack(writer, 3);
-			AudioMessage::pack(writer, encodedData.audio, encodedData.size);
-
-			auto buffer = writer.getBuffer();
-
-			m_udpSocket.mSendTo(buffer, buffer.size(), contact.ip, contact.port);
-		}
-	}
-	 */
 }
 
 void Client::setM_serverIp(const std::string &m_serverIp) {
@@ -196,11 +171,7 @@ void Client::callReceived(const std::string &username)
 void Client::acceptCall()
 {
 	std::cout << "accepting call" << std::endl;
-	std::vector<uint8_t > buffer;
 	Contact caller;
-
-	buffer.push_back('l');
-	buffer.push_back('l');
 
 	for (const auto &contact : m_contacts)
 	{
@@ -218,6 +189,28 @@ void Client::acceptCall()
 	m_udpWorker->start();
 
 	m_audioManager.startAudioPlaying();
+
+
+	m_timer.start(5);
+
+	connect(&m_timer, &QTimer::timeout, this,[this, caller] () {
+		auto sample = m_audioManager.getLastRecord();
+
+		if (sample.size > 0)
+		{
+			auto encodedData = m_encodeManager.encode(sample);
+
+			marguerite::io::BinaryStreamWriter writer;
+
+			Message::pack(writer, 3);
+			AudioMessage::pack(writer, encodedData.audio, encodedData.size);
+
+			auto buffer = writer.getBuffer();
+
+			m_udpSocket.mSendTo(buffer, buffer.size(), caller.ip, caller.port);
+		}
+	});
+
 
 	m_viewModel->hidePopup();
 }
