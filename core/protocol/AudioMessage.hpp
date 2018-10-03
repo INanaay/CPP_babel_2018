@@ -12,7 +12,7 @@
 class AudioMessage
 {
 public:
-    static void pack(marguerite::io::BinaryStreamWriter &writer, std::vector<uint8_t> &frame);
+    static void pack(marguerite::io::BinaryStreamWriter &writer, std::vector<uint8_t> &frame, int size);
     static std::vector<uint8_t> unpack(marguerite::io::BinaryStreamReader &reader);
 };
 

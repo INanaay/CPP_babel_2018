@@ -4,9 +4,9 @@
 
 #include "AudioMessage.hpp"
 
-void AudioMessage::pack(marguerite::io::BinaryStreamWriter &writer, std::vector<uint8_t> &frame)
+void AudioMessage::pack(marguerite::io::BinaryStreamWriter &writer, std::vector<uint8_t> &frame, int size)
 {
-    writer.writeInt(frame.size());
+    writer.writeInt(size);
     writer.writeBytes(frame.data(), frame.size());
 }
 
