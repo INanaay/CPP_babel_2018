@@ -12,6 +12,8 @@
 #include <core/protocol/ListMessage.hpp>
 #include <core/protocol/LetsCallMessage.hpp>
 #include <ctime>
+#include <core/protocol/AudioMessage.hpp>
+#include <QtCore/QTimer>
 
 Client::Client() : m_audioManager(), m_encodeManager(), m_clientStatus(INACTIVE), m_socket(marguerite::net::IpType::V4,
 	marguerite::net::ProtocolType::TCP), m_viewModel(nullptr), m_udpWorker(nullptr), m_udpSocket(marguerite::net::IpType::V4,
@@ -109,8 +111,14 @@ void Client::startUdpWorker()
 	m_udpWorker->m_udpSocket = &m_udpSocket;
 }
 
+void Client::stopCall()
+{
+	m_clientStatus = INACTIVE;
+}
+
 void Client::tryToCall(int index)
 {
+
 	auto contact = m_contacts[index];
 	marguerite::io::BinaryStreamWriter writer;
 
@@ -121,10 +129,32 @@ void Client::tryToCall(int index)
 	m_socket.mSend(writer.getBuffer());
 	m_udpWorker->port = contact.port;
 	m_udpWorker->ip = contact.ip;
-	m_udpWorker->start();
-
+	m_clientStatus = ACTIVE;
+	//m_udpWorker->start();
 	m_audioManager.startAudioRecording();
 
+
+	m_timer.start(5);
+	
+	connect(&m_timer, &QTimer::timeout, this,[this, contact] () {
+		auto sample = m_audioManager.getLastRecord();
+
+		if (sample.size > 0)
+		{
+			auto encodedData = m_encodeManager.encode(sample);
+
+			marguerite::io::BinaryStreamWriter writer;
+
+			Message::pack(writer, 3);
+			AudioMessage::pack(writer, encodedData.audio, encodedData.size);
+
+			auto buffer = writer.getBuffer();
+
+			m_udpSocket.mSendTo(buffer, buffer.size(), contact.ip, contact.port);
+		}
+	});
+
+	/*
 	while (1)
 	{
 		auto sample = m_audioManager.getLastRecord();
@@ -132,9 +162,18 @@ void Client::tryToCall(int index)
 		if (sample.size > 0)
 		{
 			auto encodedData = m_encodeManager.encode(sample);
-			m_udpSocket.mSendTo(encodedData.audio, encodedData.size, contact.ip, contact.port);
+
+			marguerite::io::BinaryStreamWriter writer;
+
+			Message::pack(writer, 3);
+			AudioMessage::pack(writer, encodedData.audio, encodedData.size);
+
+			auto buffer = writer.getBuffer();
+
+			m_udpSocket.mSendTo(buffer, buffer.size(), contact.ip, contact.port);
 		}
 	}
+	 */
 }
 
 void Client::setM_serverIp(const std::string &m_serverIp) {
@@ -150,6 +189,8 @@ void Client::callReceived(const std::string &username)
 	m_viewModel->showPopup(username);
 	while (((double) clock() - start) / CLOCKS_PER_SEC < 5);
 	m_viewModel->hidePopup();
+
+
 }
 
 void Client::acceptCall()
@@ -175,10 +216,20 @@ void Client::acceptCall()
 	m_udpWorker->port = caller.port;
 	m_udpWorker->ip = caller.ip;
 	m_udpWorker->start();
-	m_udpSocket.mSendTo(buffer, 2, caller.ip, caller.port);
 
+	m_audioManager.startAudioPlaying();
 
 	m_viewModel->hidePopup();
+}
+
+void Client::decodeData(std::vector<uint8_t> audio)
+{
+	encodedData encoded;
+
+	encoded.audio = audio;
+	encoded.size = audio.size();
+	auto decoded = m_encodeManager.decode(encoded);
+	m_audioManager.pushLastAudio(decoded);
 }
 
 

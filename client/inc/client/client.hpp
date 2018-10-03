@@ -12,6 +12,7 @@
 #include <core/io/BinaryStreamReader.hpp>
 #include "client/inc/common/contacts.hpp"
 #include "client/inc/client/udpWorker.hpp"
+#include "QTimer"
 #include "readServerWorker.hpp"
 
 class ViewModel;
@@ -27,8 +28,9 @@ enum Status
 	IN_CALL
 };
 
-class Client
+class Client : public QObject
 {
+	Q_OBJECT
 public:
 	Client();
 	void test();
@@ -46,11 +48,16 @@ public:
 	void setM_serverIp(const std::string &m_serverIp);
 	void callReceived(const std::string &username);
 	void acceptCall();
+	void decodeData(std::vector<uint8_t> audio);
+	void stopCall();
 
 
 private:
 
 	std::string m_currentCaller;
+
+
+	QTimer m_timer;
 
 	readServerWorker *m_worker;
 	udpWorker *m_udpWorker;

@@ -22,7 +22,6 @@ void readServerWorker::run()
 				contactReceivedHandler(reader);
 				break;
 			case 2:
-				std::cout << "Received call" << std::endl;
 				callReceivedHandler(reader);
 				break;
 		}
@@ -58,6 +57,4 @@ void readServerWorker::callReceivedHandler(marguerite::io::BinaryStreamReader &r
 	auto infos = LetsCallMessage::unpack(reader);
 
 	m_parent->callReceived(infos);
-
-	std::cout << "INfos = " << infos << std::endl;
 }

@@ -34,7 +34,6 @@ encodedData EncodeManager::encode(const decodedData &data) {
 	encoded.audio.resize(sampleSize);
 	encoded.size = opus_encode_float(m_encoder, data.audio.data(), FRAMES_PER_BUFFER, encoded.audio.data(), sampleSize);
 
-	std::cout << "Encoded size = " << encoded.size << std::endl;
 
 	if (encoded.size < 0)
 		throw std::exception();
@@ -46,14 +45,11 @@ decodedData EncodeManager::decode(const encodedData &data) {
 	decodedData decoded{};
 
 
-	std::cout << "Trying to decode" << std::endl;
-	std::cout << "received Size = " << data.size << std::endl;
 
 	decoded.audio.resize(FRAMES_PER_BUFFER * NB_CHANNELS);
 
 	decoded.size = opus_decode_float(m_decoder, data.audio.data(), data.size, decoded.audio.data(), FRAMES_PER_BUFFER, 0);
-	std::cout << "decoded" << std::endl;
-	std::cout << "Decoded size = " << decoded.size << std::endl;
+
 	if (decoded.size < 0)
 		throw std::exception();
 	return decoded;
