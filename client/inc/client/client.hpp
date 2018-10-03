@@ -46,6 +46,7 @@ public:
 	void setM_serverIp(const std::string &m_serverIp);
 	void callReceived(const std::string &username);
 	void acceptCall();
+	void decodeData(std::vector<uint8_t> audio);
 
 
 private:

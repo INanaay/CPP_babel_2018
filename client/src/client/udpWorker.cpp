@@ -21,7 +21,13 @@ void udpWorker::run()
 
 		std::cout << "received stuff" << std::endl;
 
+		auto id = Message::unpack(reader);
+		if (id == -1)
+			std::cout << "ntm y'a une erreur dans le packet" << std::endl;
 		auto audio = AudioMessage::unpack(reader);
+		std::cout << "yO" << std::endl;
+		receiveAudioData(audio);
+
 
 
 	}
@@ -35,8 +41,8 @@ void udpWorker::run()
 
 }
 
-void udpWorker::receiveAudioData()
+void udpWorker::receiveAudioData(std::vector<uint8_t> &audio)
 {
-
+	m_parent->decodeData(audio);
 }
 

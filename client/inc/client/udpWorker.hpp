@@ -2,22 +2,24 @@
 // Created by NANAA on 02/10/18.
 //
 
-#include <QtCore/QThread>
-#include <iostream>
-#include <core/net/Socket.hpp>
-#include <client/inc/common/contacts.hpp>
+
 
 #ifndef CPP_BABEL_2018_UDPWORKER_HPP
 #define CPP_BABEL_2018_UDPWORKER_HPP
 
-class ViewModel;
+#include <QtCore/QThread>
+#include <iostream>
+#include <core/net/Socket.hpp>
+#include "client/inc/common/contacts.hpp"
+#include "client.hpp"
+
 class Client;
+class ViewModel;
 
 class udpWorker : public QThread
 {
 Q_OBJECT
 void run() override;
-void receiveAudioData();
 
 public:
 	ViewModel *m_viewModel;
@@ -26,6 +28,7 @@ public:
 	std::vector<Contact> *contacts;
 	std::string ip;
 	int port;
+	void receiveAudioData(std::vector<uint8_t> &audio);
 
 
 };
