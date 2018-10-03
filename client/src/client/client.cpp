@@ -13,6 +13,7 @@
 #include <core/protocol/LetsCallMessage.hpp>
 #include <ctime>
 #include <core/protocol/AudioMessage.hpp>
+#include <QtCore/QTimer>
 
 Client::Client() : m_audioManager(), m_encodeManager(), m_clientStatus(INACTIVE), m_socket(marguerite::net::IpType::V4,
 	marguerite::net::ProtocolType::TCP), m_viewModel(nullptr), m_udpWorker(nullptr), m_udpSocket(marguerite::net::IpType::V4,
@@ -130,9 +131,30 @@ void Client::tryToCall(int index)
 	m_udpWorker->ip = contact.ip;
 	m_clientStatus = ACTIVE;
 	//m_udpWorker->start();
-
 	m_audioManager.startAudioRecording();
 
+
+	m_timer.start(5);
+	
+	connect(&m_timer, &QTimer::timeout, this,[this, contact] () {
+		auto sample = m_audioManager.getLastRecord();
+
+		if (sample.size > 0)
+		{
+			auto encodedData = m_encodeManager.encode(sample);
+
+			marguerite::io::BinaryStreamWriter writer;
+
+			Message::pack(writer, 3);
+			AudioMessage::pack(writer, encodedData.audio, encodedData.size);
+
+			auto buffer = writer.getBuffer();
+
+			m_udpSocket.mSendTo(buffer, buffer.size(), contact.ip, contact.port);
+		}
+	});
+
+	/*
 	while (1)
 	{
 		auto sample = m_audioManager.getLastRecord();
@@ -151,6 +173,7 @@ void Client::tryToCall(int index)
 			m_udpSocket.mSendTo(buffer, buffer.size(), contact.ip, contact.port);
 		}
 	}
+	 */
 }
 
 void Client::setM_serverIp(const std::string &m_serverIp) {
