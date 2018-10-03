@@ -34,11 +34,11 @@ set(CORE_SRC
         core/protocol/IntroduceMessage.hpp
         core/protocol/LetsCallMessage.cpp core/protocol/LetsCallMessage.hpp)
 
-add_executable(CPP_babel_server
+add_executable(babel_server
         server/src/main.cpp
         ${CORE_SRC})
 
-TARGET_LINK_LIBRARIES(CPP_babel_server
+TARGET_LINK_LIBRARIES(babel_server
         ${CONAN_LIBS})
 
 set(CMAKE_AUTOMOC ON)
@@ -50,7 +50,7 @@ find_package(Qt5Widgets CONFIG REQUIRED)
 find_package(Qt5Core CONFIG REQUIRED)
 find_package(Qt5Gui CONFIG REQUIRED)
 
-add_executable(CPP_babel_client
+add_executable(babel_client
         client/src/main.cpp
         client/src/audio/AudioManager.cpp
         client/src/audio/EncodeManager.cpp
@@ -68,7 +68,7 @@ add_executable(CPP_babel_client
         ${CORE_SRC} core/protocol/AudioMessage.cpp core/protocol/AudioMessage.hpp
         client/src/client/udpWorker.cpp client/inc/client/udpWorker.hpp)
 
-target_link_libraries(CPP_babel_client
+target_link_libraries(babel_client
         Qt5::Core
         Qt5::Gui
         Qt5::Widgets
