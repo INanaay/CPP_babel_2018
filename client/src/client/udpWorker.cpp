@@ -18,7 +18,7 @@ void udpWorker::run()
 
 		marguerite::io::BinaryStreamReader reader(buffer);
 
-
+		std::cout << "Received data in udp" << std::endl;
 
 		auto id = Message::unpack(reader);
 		if (id == -1)

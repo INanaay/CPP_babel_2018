@@ -190,6 +190,7 @@ void Client::acceptCall()
 	m_udpWorker->start();
 
 	m_audioManager.startAudioPlaying();
+	m_audioManager.startAudioRecording();
 
 
 	m_timer.start(5);
