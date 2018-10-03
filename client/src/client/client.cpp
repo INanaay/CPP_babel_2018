@@ -110,8 +110,14 @@ void Client::startUdpWorker()
 	m_udpWorker->m_udpSocket = &m_udpSocket;
 }
 
+void Client::stopCall()
+{
+	m_clientStatus = INACTIVE;
+}
+
 void Client::tryToCall(int index)
 {
+
 	auto contact = m_contacts[index];
 	marguerite::io::BinaryStreamWriter writer;
 
@@ -122,6 +128,7 @@ void Client::tryToCall(int index)
 	m_socket.mSend(writer.getBuffer());
 	m_udpWorker->port = contact.port;
 	m_udpWorker->ip = contact.ip;
+	m_clientStatus = ACTIVE;
 	//m_udpWorker->start();
 
 	m_audioManager.startAudioRecording();
@@ -159,6 +166,8 @@ void Client::callReceived(const std::string &username)
 	m_viewModel->showPopup(username);
 	while (((double) clock() - start) / CLOCKS_PER_SEC < 5);
 	m_viewModel->hidePopup();
+
+
 }
 
 void Client::acceptCall()

@@ -47,6 +47,7 @@ public:
 	void callReceived(const std::string &username);
 	void acceptCall();
 	void decodeData(std::vector<uint8_t> audio);
+	void stopCall();
 
 
 private:

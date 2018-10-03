@@ -19,13 +19,11 @@ void udpWorker::run()
 		marguerite::io::BinaryStreamReader reader(buffer);
 
 
-		std::cout << "received stuff" << std::endl;
 
 		auto id = Message::unpack(reader);
 		if (id == -1)
 			std::cout << "ntm y'a une erreur dans le packet" << std::endl;
 		auto audio = AudioMessage::unpack(reader);
-		std::cout << "yO" << std::endl;
 		receiveAudioData(audio);
 
 

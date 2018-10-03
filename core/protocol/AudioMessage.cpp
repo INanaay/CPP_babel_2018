@@ -14,9 +14,6 @@ void AudioMessage::pack(marguerite::io::BinaryStreamWriter &writer, std::vector<
 std::vector<uint8_t> AudioMessage::unpack(marguerite::io::BinaryStreamReader &reader)
 {
     int length = reader.readInt();
-
-    std::cout << " Unpack size = " << length << std::endl;
-
     std::vector<uint8_t> frame(length);
     reader.readBytes(frame.data(), length);
     return (std::move(frame));
