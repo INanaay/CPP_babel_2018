@@ -42,19 +42,33 @@ public:
 	void setM_contacts(const std::vector<Contact> &m_contacts);
 	void setM_viewModel(ViewModel *m_viewModel);
 	const std::string &getM_username() const;
-	void startCall(int index);
+	void tryToCall(int index);
+	void setM_serverIp(const std::string &m_serverIp);
+	void callReceived(const std::string &username);
+	void acceptCall();
+
 
 private:
+
+	std::string m_currentCaller;
+
 	readServerWorker *m_worker;
 	udpWorker *m_udpWorker;
+
 	AudioManager m_audioManager;
 	EncodeManager m_encodeManager;
+
 	std::string m_username;
+	std::string m_serverIp;
+
 	Status m_clientStatus;
 	MainWindow *mainWindow;
+
 	std::vector<Contact> m_contacts;
+
 	marguerite::net::Socket m_socket;
 	marguerite::net::Socket m_udpSocket;
+
 	ViewModel *m_viewModel;
 
 };

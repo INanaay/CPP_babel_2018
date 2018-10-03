@@ -9,9 +9,12 @@
 
 void udpWorker::run()
 {
+	std::cout << "STARTED UDP WORKER" << std::endl << std::endl;
 	while (1)
 	{
 		m_udpSocket->mReceiveFrom(1024, ip, port);
+
+		std::cout << "received stuff" << std::endl;
 	}
 		/*
 		auto buffer = m_udpSocket(1024);

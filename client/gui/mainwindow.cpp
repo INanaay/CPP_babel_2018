@@ -17,6 +17,7 @@ MainWindow::MainWindow(QWidget *parent) :
     move(center.x() - width() * 0.5, center.y() - height() * 0.5);
     m_model = new QStringListModel(this);
 
+    ui->callPopup->hide();
 
     ui->contactsListView->setEditTriggers(0);
     //populateContactList(list);
@@ -56,4 +57,21 @@ void MainWindow::on_callButton_clicked()
 
 void MainWindow::setM_viewModel(const ViewModel *m_viewModel) {
 	MainWindow::m_viewModel = m_viewModel;
+}
+
+void MainWindow::showCallPopup(const std::string &username)
+{
+    QString user = QString::fromStdString(username);
+    ui->usernamePopupLabel->setText(user);
+    ui->callPopup->show();
+}
+
+void MainWindow::hideCallPopup()
+{
+    ui->callPopup->hide();
+}
+
+void MainWindow::on_acceptButton_clicked()
+{
+	m_viewModel->acceptCall();
 }

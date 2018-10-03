@@ -11,14 +11,14 @@
 #include <core/protocol/Message.hpp>
 #include <core/protocol/ListMessage.hpp>
 #include <core/protocol/LetsCallMessage.hpp>
-
+#include <ctime>
 
 Client::Client() : m_audioManager(), m_encodeManager(), m_clientStatus(INACTIVE), m_socket(marguerite::net::IpType::V4,
 	marguerite::net::ProtocolType::TCP), m_viewModel(nullptr), m_udpWorker(nullptr), m_udpSocket(marguerite::net::IpType::V4,
 												     marguerite::net::ProtocolType::UDP)
 {
 	std::cout << "Creating client" << std::endl;
-	m_udpSocket.mBind("127.0.0.1", 4444);
+	m_udpSocket.mBind("0.0.0.0", 4444);
 
 }
 
@@ -39,7 +39,7 @@ void Client::connectToServer()
 
 	//m_socket.mConnect("127.0.0.1", 6666);
 
-	m_socket.mConnect("10.41.178.178", 6666);
+	m_socket.mConnect(m_serverIp, 6666);
 	marguerite::io::BinaryStreamWriter writer;
 
 	Message::pack(writer, 0);
@@ -110,12 +110,12 @@ void Client::startUdpWorker()
 	m_udpWorker->m_udpSocket = &m_udpSocket;
 }
 
-void Client::startCall(int index)
+void Client::tryToCall(int index)
 {
 	auto contact = m_contacts[index];
 	marguerite::io::BinaryStreamWriter writer;
 
-	std::cout << "username = " << contact.username << std::endl;
+	std::cout << "Trying to call " << contact.username << std::endl;
 
 	Message::pack(writer, 2);
 	LetsCallMessage::pack(writer, contact.username);
@@ -124,6 +124,50 @@ void Client::startCall(int index)
 	m_udpWorker->ip = contact.ip;
 	m_udpWorker->start();
 
+
+}
+
+void Client::setM_serverIp(const std::string &m_serverIp) {
+	Client::m_serverIp = m_serverIp;
+}
+
+void Client::callReceived(const std::string &username)
+{
+
+	clock_t start = clock();
+
+	m_currentCaller = username;
+	m_viewModel->showPopup(username);
+	while (((double) clock() - start) / CLOCKS_PER_SEC < 5);
+	m_viewModel->hidePopup();
+}
+
+void Client::acceptCall()
+{
+	std::cout << "accepting call" << std::endl;
+	std::vector<uint8_t > buffer;
+	Contact caller;
+
+	buffer.push_back('l');
+	buffer.push_back('l');
+
+	for (const auto &contact : m_contacts)
+	{
+		if (contact.username == m_currentCaller)
+		{
+			std::cout << "ip:" << contact.ip << std::endl;
+			std::cout << "port: " << contact.port << std::endl;
+			caller = contact;
+			break;
+		}
+	}
+
+	m_udpWorker->port = caller.port;
+	m_udpWorker->ip = caller.ip;
+	m_udpWorker->start();
+	m_udpSocket.mSendTo(buffer, 2, caller.ip, caller.port);
+
+	m_viewModel->hidePopup();
 }
 
 

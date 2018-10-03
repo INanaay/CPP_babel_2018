@@ -25,6 +25,7 @@ public:
 
 private:
 	void contactReceivedHandler(marguerite::io::BinaryStreamReader &reader);
+	void callReceivedHandler(marguerite::io::BinaryStreamReader &reader);
 };
 
 #endif //CPP_BABEL_2018_READSERVERWORKER_HPP

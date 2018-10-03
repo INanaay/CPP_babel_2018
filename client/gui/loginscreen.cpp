@@ -29,8 +29,9 @@ loginScreen::~loginScreen()
 void loginScreen::on_connect_button_clicked()
 {
    m_username = ui->usernameTextBox->text().toStdString();
+   m_ip = ui->ipTextBox->text().toStdString();
 
-    if (m_username.empty())
+    if (m_username.empty() || m_ip.empty())
         ui->usernameErrorLabel->setVisible(true);
     else
     {
@@ -39,6 +40,7 @@ void loginScreen::on_connect_button_clicked()
         std::cout << m_username << std::endl;
 
 	    m_viewModel->setClientUsername(m_username);
+	    m_viewModel->setIpServer(m_ip);
 
 	    m_viewModel->connectToServer();
 

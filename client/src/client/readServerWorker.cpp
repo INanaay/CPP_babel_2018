@@ -5,6 +5,7 @@
 #include <client/inc/client/readServerWorker.hpp>
 #include <core/protocol/Message.hpp>
 #include <core/protocol/ListMessage.hpp>
+#include <core/protocol/LetsCallMessage.hpp>
 #include "client/inc/common/contacts.hpp"
 
 void readServerWorker::run()
@@ -22,6 +23,7 @@ void readServerWorker::run()
 				break;
 			case 2:
 				std::cout << "Received call" << std::endl;
+				callReceivedHandler(reader);
 				break;
 		}
 
@@ -49,4 +51,13 @@ void readServerWorker::contactReceivedHandler(marguerite::io::BinaryStreamReader
 	m_parent->setM_contacts(contacts);
 	std::cout << "Trying to populate List" << std::endl;
 	m_viewModel->populateContactList();
+}
+
+void readServerWorker::callReceivedHandler(marguerite::io::BinaryStreamReader &reader)
+{
+	auto infos = LetsCallMessage::unpack(reader);
+
+	m_parent->callReceived(infos);
+
+	std::cout << "INfos = " << infos << std::endl;
 }

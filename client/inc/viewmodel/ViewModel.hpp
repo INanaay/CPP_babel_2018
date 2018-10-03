@@ -23,6 +23,10 @@ public:
 	void connectToServer() const;
 	void populateContactList() const;
 	void setClientUsername(const std::string &username);
+	void setIpServer(const std::string &ip);
+	void hidePopup() const;
+	void showPopup(const std::string &username) const;
+	void acceptCall() const;
 private:
 	MainWindow *m_mainWindow;
 	loginScreen *m_loginScreen;

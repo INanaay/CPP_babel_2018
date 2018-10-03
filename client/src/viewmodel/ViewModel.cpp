@@ -59,7 +59,27 @@ void ViewModel::populateContactList() const
 
 void ViewModel::startCall(int index) const
 {
-	m_client->startCall(index);
+	m_client->tryToCall(index);
+}
+
+void ViewModel::setIpServer(const std::string &ip)
+{
+	m_client->setM_serverIp(ip);
+}
+
+void ViewModel::hidePopup() const
+{
+	m_mainWindow->hideCallPopup();
+}
+
+void ViewModel::showPopup(const std::string &username) const
+{
+	m_mainWindow->showCallPopup(username);
+}
+
+void ViewModel::acceptCall() const
+{
+	m_client->acceptCall();
 }
 
 

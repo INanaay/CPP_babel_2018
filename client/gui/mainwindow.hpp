@@ -24,7 +24,8 @@ public:
     ~MainWindow();
     void populateContactList(const std::vector<Contact> &list);
     void setM_viewModel(const ViewModel *m_viewModel);
-
+    void showCallPopup(const std::string &username);
+    void hideCallPopup();
 
 private:
 	Ui::MainWindow *ui;
@@ -34,6 +35,7 @@ private:
 
 private slots:
     void on_callButton_clicked();
+    void on_acceptButton_clicked();
 };
 
 #endif // MAINWINDOW_HPP

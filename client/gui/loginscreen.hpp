@@ -30,6 +30,7 @@ private slots:
 private:
     Ui::loginScreen *ui;
     std::string m_username;
+    std::string m_ip;
     ViewModel *m_viewModel;
 };
 
