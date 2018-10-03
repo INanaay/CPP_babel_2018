@@ -128,6 +128,7 @@ void Client::tryToCall(int index)
 	m_clientStatus = ACTIVE;
 	m_udpWorker->start();
 	m_audioManager.startAudioRecording();
+	m_audioManager.startAudioPlaying();
 
 
 	m_timer.start(5);
