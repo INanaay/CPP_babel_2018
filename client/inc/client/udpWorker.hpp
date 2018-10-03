@@ -17,7 +17,7 @@ class udpWorker : public QThread
 {
 Q_OBJECT
 void run() override;
-void callContact(const std::string &ip) const;
+void receiveAudioData();
 
 public:
 	ViewModel *m_viewModel;

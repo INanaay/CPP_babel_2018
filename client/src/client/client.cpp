@@ -51,7 +51,6 @@ void Client::connectToServer()
 	marguerite::io::BinaryStreamReader reader(buffer);
 	Message::unpack(reader);
 	auto list = ListMessage::unpack(reader);
-	std::cout << "unpack" << std::endl;
 	getContacts(list);
 /*
 	marguerite::io::BinaryStreamReader reader(buffer);
@@ -124,7 +123,18 @@ void Client::tryToCall(int index)
 	m_udpWorker->ip = contact.ip;
 	m_udpWorker->start();
 
+	m_audioManager.startAudioRecording();
 
+	while (1)
+	{
+		auto sample = m_audioManager.getLastRecord();
+
+		if (sample.size > 0)
+		{
+			auto encodedData = m_encodeManager.encode(sample);
+			m_udpSocket.mSendTo(encodedData.audio, encodedData.size, contact.ip, contact.port);
+		}
+	}
 }
 
 void Client::setM_serverIp(const std::string &m_serverIp) {
@@ -166,6 +176,7 @@ void Client::acceptCall()
 	m_udpWorker->ip = caller.ip;
 	m_udpWorker->start();
 	m_udpSocket.mSendTo(buffer, 2, caller.ip, caller.port);
+
 
 	m_viewModel->hidePopup();
 }

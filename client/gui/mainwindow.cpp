@@ -7,7 +7,6 @@ MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
 {
-	std::cout << "sup" << std::endl;
     ui->setupUi(this);
 
     setWindowTitle("Babel");
@@ -21,7 +20,6 @@ MainWindow::MainWindow(QWidget *parent) :
 
     ui->contactsListView->setEditTriggers(0);
     //populateContactList(list);
-    std::cout << "Initialized main window" << std::endl;
 }
 
 MainWindow::~MainWindow()
@@ -31,7 +29,6 @@ MainWindow::~MainWindow()
 
 void MainWindow::populateContactList(const std::vector<Contact> &list)
 {
-    std::cout << "Populating list in main window" << std::endl;
     m_stringList.clear();
 
     for (const auto &contact : list)
