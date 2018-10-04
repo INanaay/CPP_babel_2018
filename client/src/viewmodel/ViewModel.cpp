@@ -99,6 +99,7 @@ void ViewModel::changeHangButton() const
 
 void ViewModel::stopCall() const
 {
+	std::cout << "Pressed hang up" << std::endl;
 	m_client->sendStopPacket();
 }
 
