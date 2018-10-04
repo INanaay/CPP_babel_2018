@@ -115,6 +115,7 @@ void Client::tryToCall(int index)
 	auto contact = m_contacts[index];
 	marguerite::io::BinaryStreamWriter writer;
 
+	m_callerContact = contact;
 	Message::pack(writer, 2);
 	LetsCallMessage::pack(writer, contact.username);
 	m_socket.mSend(writer.getBuffer());
@@ -225,9 +226,8 @@ void Client::stopCall()
 	m_viewModel->changeHangButton();
 	m_audioManager.stopAudioRecording();
 	m_audioManager.stopAudioPlaying();
-	m_udpWorker->exit();
-	disconnect(&m_timer, SIGNAL(QTimer::timeout()));
-	//m_timer.stop();
+	m_udpWorker->quit();
+	m_timer.stop();
 }
 
 void Client::sendStopPacket()
