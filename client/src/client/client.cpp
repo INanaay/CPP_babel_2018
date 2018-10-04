@@ -226,6 +226,7 @@ void Client::stopCall()
 	m_audioManager.stopAudioRecording();
 	m_audioManager.stopAudioPlaying();
 	m_udpWorker->exit();
+	disconnect(&m_timer, SIGNAL(QTimer::timeout()));
 	//m_timer.stop();
 }
 
