@@ -225,12 +225,15 @@ void Client::stopCall()
 	m_viewModel->changeHangButton();
 	m_audioManager.stopAudioRecording();
 	m_audioManager.stopAudioPlaying();
-	m_udpWorker->quit();
+	m_udpWorker->exit();
 	//m_timer.stop();
 }
 
 void Client::sendStopPacket()
 {
+	stopCall();
+
+
 	marguerite::io::BinaryStreamWriter writer;
 	Message::pack(writer, 4);
 
@@ -239,7 +242,6 @@ void Client::sendStopPacket()
 	auto buffer = writer.getBuffer();
 
 	m_udpSocket.mSendTo(buffer, buffer.size(), m_callerContact.ip, m_callerContact.port);
-	stopCall();
 }
 
 
