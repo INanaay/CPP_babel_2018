@@ -82,7 +82,7 @@ void MainWindow::startCall()
 void MainWindow::stopCall()
 {
     ui->callButton->setEnabled(true);
-    ui->callButton->setEnabled(false);
+    ui->hangButton->setEnabled(false);
 }
 
 void MainWindow::on_hangButton_clicked()

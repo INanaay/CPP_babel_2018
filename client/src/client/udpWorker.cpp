@@ -13,12 +13,8 @@ void udpWorker::run()
 	std::cout << "STARTED UDP WORKER" << std::endl << std::endl;
 	while (1)
 	{
-
 		auto buffer = m_udpSocket->mReceiveFrom(1024, ip, port);
-
 		marguerite::io::BinaryStreamReader reader(buffer);
-
-		//std::cout << "Received data in udp" << std::endl;
 
 		auto id = Message::unpack(reader);
 

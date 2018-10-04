@@ -128,6 +128,7 @@ void Client::tryToCall(int index)
 	m_viewModel->changeCallButtons();
 
 	m_timer.start(5);
+	m_timer.moveToThread(m_udpWorker);
 
 	connect(&m_timer, &QTimer::timeout, this,[this, contact] () {
 		auto sample = m_audioManager.getLastRecord();
@@ -227,7 +228,6 @@ void Client::stopCall()
 	m_audioManager.stopAudioRecording();
 	m_audioManager.stopAudioPlaying();
 	m_udpWorker->quit();
-	m_timer.setInterval(-1);
 }
 
 void Client::sendStopPacket()

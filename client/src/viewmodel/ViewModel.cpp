@@ -94,6 +94,7 @@ void ViewModel::changeCallButtons() const
 
 void ViewModel::changeHangButton() const
 {
+	std::cout << "Stopping call" << std::endl;
 	m_mainWindow->stopCall();
 }
 
