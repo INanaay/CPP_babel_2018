@@ -21,26 +21,25 @@ void udpWorker::run()
 		std::cout << "Received data in udp" << std::endl;
 
 		auto id = Message::unpack(reader);
-		if (id == -1)
-			std::cout << "ntm y'a une erreur dans le packet" << std::endl;
+
+		if (id == 4)
+		{
+			stopCallHandler();
+
+		}
+
 		auto audio = AudioMessage::unpack(reader);
 		receiveAudioData(audio);
-
-
-
 	}
-		/*
-		auto buffer = m_udpSocket(1024);
-
-		marguerite::io::BinaryStreamReader reader(buffer);
-
-		auto id = Message().unpack(reader);
-		 */
-
 }
 
 void udpWorker::receiveAudioData(std::vector<uint8_t> &audio)
 {
 	m_parent->decodeData(audio);
+}
+
+void udpWorker::stopCallHandler()
+{
+	m_parent->stopCall();
 }
 

@@ -26,6 +26,8 @@ public:
     void setM_viewModel(const ViewModel *m_viewModel);
     void showCallPopup(const std::string &username);
     void hideCallPopup();
+    void startCall();
+    void stopCall();
 
 private:
 	Ui::MainWindow *ui;
@@ -36,6 +38,7 @@ private:
 private slots:
     void on_callButton_clicked();
     void on_acceptButton_clicked();
+    void on_hangButton_clicked();
 };
 
 #endif // MAINWINDOW_HPP

@@ -22,6 +22,7 @@ public:
     explicit loginScreen(QWidget *parent = 0);
     ~loginScreen();
     void setM_viewModel(ViewModel *m_viewModel);
+    void showError();
 
 
 private slots:

@@ -82,4 +82,24 @@ void ViewModel::acceptCall() const
 	m_client->acceptCall();
 }
 
+void ViewModel::showError() const
+{
+	m_loginScreen->showError();
+}
+
+void ViewModel::changeCallButtons() const
+{
+	m_mainWindow->startCall();
+}
+
+void ViewModel::changeHangButton() const
+{
+	m_mainWindow->stopCall();
+}
+
+void ViewModel::stopCall() const
+{
+	m_client->sendStopPacket();
+}
+
 

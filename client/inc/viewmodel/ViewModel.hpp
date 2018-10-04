@@ -27,6 +27,10 @@ public:
 	void hidePopup() const;
 	void showPopup(const std::string &username) const;
 	void acceptCall() const;
+	void showError() const;
+	void changeCallButtons() const;
+	void changeHangButton() const;
+	void stopCall() const;
 private:
 	MainWindow *m_mainWindow;
 	loginScreen *m_loginScreen;

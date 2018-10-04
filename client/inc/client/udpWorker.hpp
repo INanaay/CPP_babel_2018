@@ -29,6 +29,7 @@ public:
 	std::string ip;
 	int port;
 	void receiveAudioData(std::vector<uint8_t> &audio);
+	void stopCallHandler();
 
 
 };

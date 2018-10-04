@@ -50,11 +50,12 @@ public:
 	void acceptCall();
 	void decodeData(std::vector<uint8_t> audio);
 	void stopCall();
-
+	void sendStopPacket();
 
 private:
 
 	std::string m_currentCaller;
+	Contact m_callerContact;
 
 
 	QTimer m_timer;

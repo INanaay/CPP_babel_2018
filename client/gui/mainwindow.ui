@@ -37,7 +37,7 @@
      <string>Call</string>
     </property>
    </widget>
-   <widget class="QPushButton" name="pushButton_2">
+   <widget class="QPushButton" name="hangButton">
     <property name="geometry">
      <rect>
       <x>260</x>
@@ -47,7 +47,7 @@
      </rect>
     </property>
     <property name="text">
-     <string>PushButton</string>
+     <string>Hang Up</string>
     </property>
    </widget>
    <widget class="QGroupBox" name="callPopup">

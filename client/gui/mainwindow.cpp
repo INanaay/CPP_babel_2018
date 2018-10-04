@@ -72,3 +72,20 @@ void MainWindow::on_acceptButton_clicked()
 {
 	m_viewModel->acceptCall();
 }
+
+void MainWindow::startCall()
+{
+    ui->callButton->setEnabled(false);
+    ui->hangButton->setEnabled(true);
+}
+
+void MainWindow::stopCall()
+{
+    ui->callButton->setEnabled(true);
+    ui->callButton->setEnabled(false);
+}
+
+void MainWindow::on_hangButton_clicked()
+{
+	m_viewModel->stopCall();
+}

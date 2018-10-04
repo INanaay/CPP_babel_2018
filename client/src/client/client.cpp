@@ -36,14 +36,15 @@ void Client::setM_username(const std::string &m_username) {
 
 void Client::connectToServer()
 {
+	try {
+		m_socket.mConnect(m_serverIp, 6666);
+	}
+	catch (std::runtime_error e) {
+		m_viewModel->showError();
+		return;
+	}
 
-	std::cout << "Trying to connect" << std::endl;
-
-	//m_socket.mConnect("127.0.0.1", 6666);
-
-	m_socket.mConnect(m_serverIp, 6666);
 	marguerite::io::BinaryStreamWriter writer;
-
 	Message::pack(writer, 0);
 	IntroduceMessage().pack(writer, m_username, m_udpSocket.getHost(), m_udpSocket.getPort());
 
@@ -54,11 +55,7 @@ void Client::connectToServer()
 	Message::unpack(reader);
 	auto list = ListMessage::unpack(reader);
 	getContacts(list);
-/*
-	marguerite::io::BinaryStreamReader reader(buffer);
-	std::cout << reader.readString() << std::endl;
-	std::cout << reader.readInt() << std::endl;
-	getContacts(reader); */
+	m_viewModel->startMainApplication();
 }
 
 void Client::getContacts(std::vector<std::tuple<std::string, std::string, int>> &contacts)
@@ -118,8 +115,6 @@ void Client::tryToCall(int index)
 	auto contact = m_contacts[index];
 	marguerite::io::BinaryStreamWriter writer;
 
-	std::cout << "Trying to call " << contact.username << std::endl;
-
 	Message::pack(writer, 2);
 	LetsCallMessage::pack(writer, contact.username);
 	m_socket.mSend(writer.getBuffer());
@@ -129,7 +124,7 @@ void Client::tryToCall(int index)
 	m_udpWorker->start();
 	m_audioManager.startAudioRecording();
 	m_audioManager.startAudioPlaying();
-
+	m_viewModel->changeCallButtons();
 
 	m_timer.start(5);
 
@@ -165,13 +160,11 @@ void Client::callReceived(const std::string &username)
 	m_viewModel->showPopup(username);
 	while (((double) clock() - start) / CLOCKS_PER_SEC < 5);
 	m_viewModel->hidePopup();
-
-
+	sendStopPacket();
 }
 
 void Client::acceptCall()
 {
-	std::cout << "accepting call" << std::endl;
 	Contact caller;
 
 	for (const auto &contact : m_contacts)
@@ -185,6 +178,8 @@ void Client::acceptCall()
 		}
 	}
 
+	m_callerContact = caller;
+
 	m_udpWorker->port = caller.port;
 	m_udpWorker->ip = caller.ip;
 	m_udpWorker->start();
@@ -192,7 +187,7 @@ void Client::acceptCall()
 	m_audioManager.startAudioPlaying();
 	m_audioManager.startAudioRecording();
 
-
+	m_viewModel->changeCallButtons();
 	m_timer.start(5);
 
 	connect(&m_timer, &QTimer::timeout, this,[this, caller] () {
@@ -212,8 +207,6 @@ void Client::acceptCall()
 			m_udpSocket.mSendTo(buffer, buffer.size(), caller.ip, caller.port);
 		}
 	});
-
-
 	m_viewModel->hidePopup();
 }
 
@@ -225,6 +218,26 @@ void Client::decodeData(std::vector<uint8_t> audio)
 	encoded.size = audio.size();
 	auto decoded = m_encodeManager.decode(encoded);
 	m_audioManager.pushLastAudio(decoded);
+}
+
+void Client::stopCall()
+{
+	m_viewModel->changeHangButton();
+	m_audioManager.stopAudioRecording();
+	m_audioManager.stopAudioPlaying();
+	m_udpWorker->quit();
+	m_timer.stop();
+}
+
+void Client::sendStopPacket()
+{
+	marguerite::io::BinaryStreamWriter writer;
+	Message::pack(writer, 3);
+
+	auto buffer = writer.getBuffer();
+
+	m_udpSocket.mSendTo(buffer, buffer.size(), m_callerContact.ip, m_callerContact.port);
+	stopCall();
 }
 
 

@@ -12,7 +12,7 @@ loginScreen::loginScreen(QWidget *parent) :
     ui(new Ui::loginScreen)
 {
     ui->setupUi(this);
-    ui->usernameErrorLabel->setVisible(false);
+    ui->errorLabel->setVisible(false);
     setWindowTitle("Login");
     QRect desktopRect = QApplication::desktop()->availableGeometry(this);
     QPoint center = desktopRect.center();
@@ -26,13 +26,18 @@ loginScreen::~loginScreen()
     delete ui;
 }
 
+void loginScreen::showError()
+{
+    ui->errorLabel->setVisible(true);
+}
+
 void loginScreen::on_connect_button_clicked()
 {
    m_username = ui->usernameTextBox->text().toStdString();
    m_ip = ui->ipTextBox->text().toStdString();
 
     if (m_username.empty() || m_ip.empty())
-        ui->usernameErrorLabel->setVisible(true);
+        showError();
     else
     {
 
@@ -46,7 +51,6 @@ void loginScreen::on_connect_button_clicked()
 
 
 
-        m_viewModel->startMainApplication();
     }
 }
 

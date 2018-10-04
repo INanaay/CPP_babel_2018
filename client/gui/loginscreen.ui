@@ -51,17 +51,17 @@ background-color: rgb(238, 238, 236);
     <string>Username</string>
    </property>
   </widget>
-  <widget class="QLabel" name="usernameErrorLabel">
+  <widget class="QLabel" name="errorLabel">
    <property name="geometry">
     <rect>
-     <x>120</x>
+     <x>110</x>
      <y>180</y>
-     <width>151</width>
+     <width>171</width>
      <height>20</height>
     </rect>
    </property>
    <property name="text">
-    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; color:#eeeeec;&quot;&gt;Enter a valid username&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; color:#eeeeec;&quot;&gt;Cannot connect to server&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
    </property>
   </widget>
   <widget class="QLabel" name="appNameLabel">
@@ -95,7 +95,7 @@ background-color: rgb(238, 238, 236);
     <string>192.168.0.104</string>
    </property>
    <property name="placeholderText">
-    <string>Username</string>
+    <string>Ip</string>
    </property>
   </widget>
  </widget>
