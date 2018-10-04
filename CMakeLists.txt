@@ -18,8 +18,6 @@ INCLUDE_DIRECTORIES(deps/incs)
 set(CORE_SRC
         core/net/Socket.cpp
         core/net/Socket.hpp
-        core/net/TcpServer.cpp
-        core/net/TcpServer.hpp
         core/io/BinaryStream.cpp
         core/io/BinaryStream.hpp
         core/io/BinaryStreamReader.cpp
@@ -36,6 +34,8 @@ set(CORE_SRC
 
 add_executable(babel_server
         server/src/main.cpp
+        core/net/TcpServer.cpp
+        core/net/TcpServer.hpp
         ${CORE_SRC})
 
 TARGET_LINK_LIBRARIES(babel_server
