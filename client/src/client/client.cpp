@@ -228,6 +228,7 @@ void Client::stopCall()
 	m_audioManager.stopAudioRecording();
 	m_audioManager.stopAudioPlaying();
 	m_udpWorker->quit();
+	m_timer.stop();
 }
 
 void Client::sendStopPacket()
