@@ -24,6 +24,7 @@ void udpWorker::run()
 
 		if (id == 4)
 		{
+			std::cout << "Stoping call" << std::endl;
 			stopCallHandler();
 
 		}

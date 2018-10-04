@@ -232,7 +232,7 @@ void Client::stopCall()
 void Client::sendStopPacket()
 {
 	marguerite::io::BinaryStreamWriter writer;
-	Message::pack(writer, 3);
+	Message::pack(writer, 4);
 
 	auto buffer = writer.getBuffer();
 
