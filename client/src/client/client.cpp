@@ -227,7 +227,7 @@ void Client::stopCall()
 	m_audioManager.stopAudioRecording();
 	m_audioManager.stopAudioPlaying();
 	m_udpWorker->quit();
-	m_timer.stop();
+	m_timer.setInterval(-1);
 }
 
 void Client::sendStopPacket()
@@ -238,7 +238,7 @@ void Client::sendStopPacket()
 	marguerite::io::BinaryStreamWriter writer;
 	Message::pack(writer, 4);
 
-	std::cout << "Sending stop packet" << std::endl;
+	std::cout << "Sending stop packet at " << m_callerContact.ip << std::endl;
 
 	auto buffer = writer.getBuffer();
 

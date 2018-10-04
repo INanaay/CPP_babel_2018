@@ -43,4 +43,3 @@ void udpWorker::stopCallHandler()
 {
 	m_parent->stopCall();
 }
-

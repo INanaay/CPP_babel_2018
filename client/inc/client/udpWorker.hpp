@@ -31,7 +31,6 @@ public:
 	void receiveAudioData(std::vector<uint8_t> &audio);
 	void stopCallHandler();
 
-
 };
 
 #endif //CPP_BABEL_2018_UDPWORKER_HPP
