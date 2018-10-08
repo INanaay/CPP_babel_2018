@@ -162,7 +162,6 @@ void Client::callReceived(const std::string &username)
 	m_viewModel->showPopup(username);
 	while (((double) clock() - start) / CLOCKS_PER_SEC < 5);
 	m_viewModel->hidePopup();
-	sendStopPacket();
 }
 
 void Client::acceptCall()
@@ -228,7 +227,7 @@ void Client::stopCall()
 	m_audioManager.stopAudioRecording();
 	m_audioManager.stopAudioPlaying();
 	m_udpWorker->quit();
-	m_timer.stop();
+	//m_timer.stop();
 }
 
 void Client::sendStopPacket()
